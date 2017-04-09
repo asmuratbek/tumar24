@@ -1,0 +1,5 @@
+DB_NAME = 'c_a'
+DB_USER = 'root'
+DB_PASS = ''
+
+ROOT_FOLDER = 'Classified'
