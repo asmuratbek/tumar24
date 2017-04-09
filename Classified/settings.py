@@ -32,12 +32,18 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ad_app',
+    'ckeditor',
+    'ckeditor_uploader',
+    'widget_tweaks',
+    'geoposition'
 ]
 
 MIDDLEWARE = [
@@ -113,9 +119,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bishkek'
 
 USE_I18N = True
 
@@ -136,7 +142,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(os.path.dirname(_PATH), 'static', 'static_root')
 
 STATICFILES_DIRS = (
-    os.path.join(os.path.dirname(BASE_DIR), ROOT_FOLDER, 'templates', 'static'),
+    os.path.join(os.path.dirname(BASE_DIR), ROOT_FOLDER, 'templates', 'public'),
 )
 
 STATICFILES_FINDERS = (
@@ -148,3 +154,37 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 JET_SIDE_MENU_COMPACT = True
 JET_INDEX_DASHBOARD = 'jet.dashboard.dashboard.DefaultIndexDashboard'
 JET_APP_INDEX_DASHBOARD = 'jet.dashboard.dashboard.DefaultAppIndexDashboard'
+
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = 'Pillow'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'language': 'ru',
+    },
+}
+
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyCHFQIQAbbG3k34jXG-reyvJ8YUyCSIYO0'
+
+GEOPOSITION_MAP_OPTIONS = {
+    'zoom': 14,
+    'zoomControl': True,
+    'minZoom': 3,
+    'maxZoom': 15,
+    'center': {
+        'lat': 42.876596,
+        'lng': 74.588280
+    }
+}
+
+# 42.876596, 74.588280
+
+GEOPOSITION_MARKER_OPTIONS = {
+    'cursor': 'pointer',
+    'position': {
+        'lng': 74.588280,
+        'lat': 42.876596
+    }
+}
