@@ -1,0 +1,233 @@
+{% load staticfiles %}
+{% load helper %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %} | TumaR 24</title>
+    {% block extra_stylesheets %}{% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body class>
+<div class="top-banner">
+    <a href="#">
+        <img src="{% static  'images/top-banner.png'  %}">
+    </a>
+</div>
+<div class="mirror"></div>
+<header>
+    <div class="carcass">
+        <div class="logo">
+            <a href="{% url 'index' %}"><img src="{% static  'images/logo.png'  %}"></a>
+        </div>
+        <div class="main-menu">
+            <ul>
+                <li><a href="{% url 'index' %}">Главная</a></li>
+                <li><a href="#">О проекте</a></li>
+                <li><a href="#">Новости</a></li>
+            </ul>
+        </div>
+        <div class="user-functions">
+            <ul>
+                <li><a href="#" class="auth-trigger">Войти</a> | <a href="#" class="auth-trigger">Регистрация</a></li>
+                <li><a href="#" class="add-ad-link" data-target="#ad-modal">Добавить объявление</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<section class="body group">
+    <div class="search">
+        <form action="#" method="POST">
+            <ul>
+                <li><input type="search" placeholder="Поиск по объявлениям..."></li>
+                <li>
+                    <label>
+                        <select>
+                            <option value>Метро</option>
+                        </select>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <select>
+                            <option value>Категория</option>
+                        </select>
+                    </label>
+                </li>
+                <li>
+                    <button type="submit">Найти</button>
+                </li>
+            </ul>
+        </form>
+    </div>
+    <div class="index-categories group">
+        {% for item in categories %}
+            <div class="categories-item">
+                <div class="item-header"><a href="{% url 'categories:parent_category' item.parent.slug %}">{{ item.parent.title }}</a></div>
+                <div class="item-content">
+                    <ul>
+                        {% for sub_cat in item.child.all %}
+                            <li><a href="{% url 'categories:child_category' category=sub_cat.slug %}">{{ sub_cat.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="main-content group">
+        {% block content %}
+            
+        {% endblock %}
+    </div>
+
+    <div class="site-info">
+        <div class="info-header">
+            <h1>Сайт объявлений Tumar24.ru</h1>
+        </div>
+        <div class="info-content">
+            <p>Давно выяснено, что при оценке <b>дизайна и композиции</b> читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст.. Здесь ваш текст.. Здесь ваш текст.." Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам "lorem ipsum" сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много версий. Некоторые версии появились по ошибке, некоторые - намеренно (например, юмористические варианты).</p>
+            <p>Давно выяснено, что при оценке <b>дизайна и композиции</b> читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст.. Здесь ваш текст.. Здесь ваш текст.." Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам "lorem ipsum" сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много версий. Некоторые версии появились по ошибке, некоторые - намеренно (например, юмористические варианты).</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="carcass group">
+        <div class="logo">
+            <a href="#"><img src="{% static  'images/logo.png'  %}"></a>
+        </div>
+        <div class="main-menu">
+            <ul>
+                <li><a href="{% url 'index' %}">Главная</a></li>
+                <li><a href="#">О проекте</a></li>
+                <li><a href="#">Новости</a></li>
+                <li><a href="#">Реклама на сайте</a></li>
+            </ul>
+        </div>
+        <div class="copyright">
+            <h2>Разработанно <a href="#">Double Byte</a></h2>
+        </div>
+    </div>
+</footer>
+
+<div class="overlay" id="ad-modal">
+    <div class="modal-carcass">
+        <span class="md-close">Закрыть</span>
+        <div class="modal-header">
+            Добавить объявление
+        </div>
+        <div class="modal-body">
+            <form action="#" method="POST" enctype="multipart/form-data">
+                <div class="input-row">
+                    <label>
+                        <select required>
+                            <option value>Выберите категорию</option>
+                        </select>
+                    </label>
+                    <label>
+                        <select required>
+                            <option value>Выберите станцию метро</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="input-row">
+                    <input type="text" placeholder="Введите название объявления" name="title" required>
+                </div>
+                <div class="input-row group">
+                    <label class="upload" for="images">
+                        <img src="{% static  'images/upload-images.png'  %}">
+                    </label>
+                    <div class="info">
+                        Вы можете выбрать сразу<br>
+                        несколько фотографий
+                    </div>
+                    <input type="file" id="images" style="display: none;" multiple>
+                </div>
+                <div class="input-row">
+                    <input type="number" placeholder="Впишите цену">
+                    <div class="info">
+                        Если цена договорная,<br>
+                        оставьте поле пустым.
+                    </div>
+                </div>
+                <div class="input-row">
+                    <textarea placeholder="Описание объявления..." cols="10" required></textarea>
+                </div>
+                <div class="input-row">
+                    <input type="text" data-type="phone-number" placeholder="Впишите свой телефон" id="phone" required>
+                    <div class="info">+7 - (***) - *** - ** - **</div>
+                </div>
+                <div class="input-row">
+                    <span>Выберите местоположение на карте кликнув на нужное местоположение:</span>
+                </div>
+                <div class="input-row">
+                    <div class="map" id="choose-mark">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d11695.61803915153!2d74.576901!3d42.87485959999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2skg!4v1493116090945" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    </div>
+                    <input type="text" placeholder="координаты" style="display: none;">
+                </div>
+                <div class="input-row">
+                    <button type="submit">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="overlay" id="auth-modal">
+    <div class="login-carcass">
+        <span class="md-close">Закрыть</span>
+        <div class="modal-header">
+            Авторизация
+        </div>
+        <div class="modal-body">
+            <div class="wrap-left">
+                <form action="#" method="POST">
+                    <div class="wrap-title">Вход</div>
+                    <div class="input-row">
+                        <input type="email" placeholder="Email">
+                    </div>
+                    <div class="input-row">
+                        <input type="password" placeholder="Пароль">
+                    </div>
+                    <div class="input-row">
+                        <button type="submit">Вход</button>
+                    </div>
+                    <div class="input-row">
+                        <span>Вход через:</span>
+                    </div>
+                </form>
+            </div>
+            <div class="delimiter"></div>
+            <div class="wrap-right">
+                <form action="#" method="POST">
+                    <div class="wrap-title">Регистрация</div>
+                    <div class="input-row">
+                        <input type="email" placeholder="Email">
+                    </div>
+                    <div class="input-row">
+                        <input type="password" placeholder="Пароль">
+                    </div>
+                    <div class="input-row">
+                        <input type="password" placeholder="Повторите пароль">
+                    </div>
+                    <div class="input-row">
+                        <button type="submit">Регистрация</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>var pathToLibs = '{% static 'js' %}', pathToSlick = '{% static 'slick' %}';</script>
+<script src="{% static  'js/jquery-3.2.1.min.js'  %}"></script>
+<script src="{% static  'js/core.js'  %}"></script>
+{% block extra_javascripts %}
+    
+{% endblock %}
+</body>
+</html>

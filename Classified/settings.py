@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'widget_tweaks',
-    'geoposition'
+    'geoposition',
+    'categories',
+    'app',
 ]
 
 MIDDLEWARE = [

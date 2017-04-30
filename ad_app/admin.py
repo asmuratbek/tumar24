@@ -7,6 +7,5 @@ from ad_app.models import *
 # Register your models here.
 
 admin.site.register(Ad)
-admin.site.register(Category)
 admin.site.register(Coordinates)
 admin.site.register(Comment)

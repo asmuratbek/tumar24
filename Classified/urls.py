@@ -1,3 +1,4 @@
+# coding=utf-8
 """Classified URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -17,11 +18,14 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
 from Classified import settings
+from app import views as app_views
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
     url(r'^admin/', admin.site.urls),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^$', app_views.index, name='index'),
+    url(r'^category/', include('categories.urls', namespace='categories'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

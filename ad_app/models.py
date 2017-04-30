@@ -5,6 +5,7 @@ from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from geoposition.fields import GeopositionField
 from django.contrib.auth.models import User as BaseUser
+from categories.models import Category
 
 # Create your models here.
 
@@ -21,7 +22,7 @@ class Ad(models.Model):
     country = models.CharField(max_length=255, verbose_name='Страна')
     city = models.CharField(max_length=255, verbose_name='Город')
 
-    category = models.ForeignKey('Category', verbose_name='Категория',
+    category = models.ForeignKey(Category, verbose_name='Категория',
                                  help_text='<b style="color: #a2a6ab;">Вы можете выбрать сразу дочернюю категорию</b>')
 
     phone = models.CharField(max_length=255, verbose_name='Телефоны')
@@ -50,28 +51,6 @@ class Coordinates(models.Model):
 
     def __unicode__(self):
         return str(self.position)
-
-
-class Category(models.Model):
-    class Meta:
-        db_table = 'category'
-        verbose_name = 'Категорию'
-        verbose_name_plural = 'Категории'
-
-    title = models.CharField(max_length=255, verbose_name='Наименование')
-    parent = models.ForeignKey('Category', verbose_name='Родительская категория', null=True, blank=True)
-    description = RichTextUploadingField(verbose_name='Описание категории', null=True, blank=True)
-    meta_title = models.CharField(max_length=255, verbose_name='Meta наименование', null=True, blank=True)
-    meta_description = models.CharField(max_length=255, verbose_name='Meta Описание', null=True, blank=True)
-    meta_key_words = models.CharField(max_length=255, verbose_name='Meta Ключевые слова', null=True, blank=True,
-                                      help_text='<b style="color: #a2a6ab;">Вводить через запятую</b>')
-
-    def save(self, *args, **kwargs):
-        self.meta_title = self.title
-        super(Category, self).save(*args, **kwargs)
-
-    def __unicode__(self):
-        return self.title
 
 
 class Comment(models.Model):
