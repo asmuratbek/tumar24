@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import datetime
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from geoposition.fields import GeopositionField
@@ -37,6 +38,8 @@ class Ad(models.Model):
 
     price = models.IntegerField(default=0, verbose_name='Цена', null=True, blank=True)
 
+    media = models.ManyToManyField('Media', verbose_name='Картинки', help_text='Рекомендуется минимум 2 шт.', blank=True)
+
     def __unicode__(self):
         return self.title
 
@@ -65,3 +68,24 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return str(self.body)[:20]
+
+
+class Media(models.Model):
+    class Meta:
+        verbose_name = 'Медиа'
+        verbose_name_plural = 'Медиа'
+
+    media_file = models.FileField(upload_to='', verbose_name='Медиа файл')
+    description = models.CharField(max_length=255, verbose_name='Описание', null=True, blank=True,
+                                   help_text='Необязательное поле')
+
+    def get_absolute_url(self):
+        return self.media_file.url
+
+    def save(self, *args, **kwargs):
+        if not self.description:
+            self.description = 'Uploaded: ' + str(datetime.date.today())
+        super(Media, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return str(self.media_file)

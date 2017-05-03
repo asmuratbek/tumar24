@@ -124,10 +124,10 @@ $(document).ready(function () {
         loadScript(pathToSlick + '/slick.min.js', function () {
             var slickPagination = $('#slider-pagination');
             $(slider).slick({
-                asNavFor: slickPagination
+                asNavFor: '#slider-pagination'
             });
             $(slickPagination).slick({
-                asNavFor: slider,
+                asNavFor: '#slider',
                 slidesToShow: 5,
                 slidesToScroll: 1
             });

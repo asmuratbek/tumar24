@@ -8,9 +8,14 @@
     <div class="last-ads">
         <div class="bread-crumbs">
             <ul>
-                <li><a href="#">Главная</a><span>></span></li>
-                <li><a href="#">Объявления</a><span>></span></li>
-                <li class="active"><a href="#">Акция!!! 3 айлык регистрация 1000р!!!</a></li>
+                <li><a href="{% url 'index' %}">Главная</a><span>></span></li>
+                <li><a href="#">Категории</a><span>></span></li>
+                {% if category.parent %}
+                    <li><a href="{% url 'categories:parent_category' category=category.parent.slug %}">{{ category.parent.title }}</a><span>></span></li>
+                    <li class="active"><a href="{% url 'categories:child_category' category=category.parent.slug child=category.slug %}">{{ category.title }}</a></li>
+                {% else %}
+                    <li class="active"><a href="{% url 'categories:parent_category' category=category.slug %}">{{ category.title }}</a></li>
+                {% endif %}
             </ul>
         </div>
         <div class="ads-header">
@@ -18,7 +23,9 @@
         </div>
         <div class="ads-content">
             <section>
-                {% include 'app/partial/_ads_index.html' %}
+                {% for ad in ads|slice:"0:6" %}
+                    {% include 'app/partial/_ads_index.html' %}
+                {% endfor %}
             </section>
             <div class="middle-banner">
                 <a href="#">
@@ -26,11 +33,23 @@
                 </a>
             </div>
             <section>
-                {% include 'app/partial/_ads_index.html' %}
+                {% for ad in ads|slice:"6:12" %}
+                    {% include 'app/partial/_ads_index.html' %}
+                {% endfor %}
             </section>
         </div>
         <div class="view-more">
-            <a href="#">Смотреть все объявления >></a>
+            <ul class="pagination">
+                {% if pagination.has_previous %}
+                    <li><a href="?page={{ pagination.previous_page_number }}"><<</a></li>
+                {% endif %}
+                {% for page in pagination.paginator.page_range %}
+                    <li {% if page == pagination.index %}class="active"{% endif %}><a href="?page={{ page }}">{{ page }}</a></li>
+                {% endfor %}
+                {% if pagination.has_next %}
+                    <li><a href="?page={{ pagination.next_page_number }}">>></a></li>
+                {% endif %}
+            </ul>
         </div>
     </div>
     <div class="last-posts">

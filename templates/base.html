@@ -69,7 +69,7 @@
                 <div class="item-content">
                     <ul>
                         {% for sub_cat in item.child.all %}
-                            <li><a href="{% url 'categories:child_category' category=sub_cat.slug %}">{{ sub_cat.title }}</a></li>
+                            <li><a href="{% url 'categories:child_category' category=item.parent.slug child=sub_cat.slug %}">{{ sub_cat.title }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -199,6 +199,8 @@
                     </div>
                     <div class="input-row">
                         <span>Вход через:</span>
+                    </div>
+                    <div class="input-row">
                     </div>
                 </form>
             </div>

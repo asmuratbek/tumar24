@@ -11,7 +11,9 @@
         </div>
         <div class="ads-content">
             <section>
-                {% include 'app/partial/_ads_index.html' %}
+                {% for ad in ads|slice:"0:6" %}
+                    {% include 'app/partial/_ads_index.html' %}
+                {% endfor %}
             </section>
             <div class="middle-banner">
                 <a href="#">
@@ -19,7 +21,9 @@
                 </a>
             </div>
             <section>
-                {% include 'app/partial/_ads_index.html' %}
+                {% for ad in ads|slice:"6:12" %}
+                    {% include 'app/partial/_ads_index.html' %}
+                {% endfor %}
             </section>
         </div>
         <div class="view-more">

@@ -1700,7 +1700,7 @@ footer .copyright h2 a:hover {
 }
 
 .change-password .form input:focus,
-.change-password .form button:focus, {
+.change-password .form button:focus {
     outline: none;
 }
 
@@ -1760,4 +1760,8 @@ footer .copyright h2 a:hover {
     font-family: "Arial Regular", sans-serif;
     font-size: 20px;
     color: #356ba8;
+}
+
+.slider img {
+    width: 100%;
 }

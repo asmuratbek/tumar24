@@ -25,7 +25,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^$', app_views.index, name='index'),
-    url(r'^category/', include('categories.urls', namespace='categories'))
+    url(r'^category/', include('categories.urls', namespace='categories')),
+    url(r'^fixtures/(?P<thread>\w+)$', app_views.fixtures, name='fixtures'),
+    url(r'^ad/', include('ad_app.urls', namespace='ad')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
