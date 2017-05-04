@@ -1765,3 +1765,96 @@ footer .copyright h2 a:hover {
 .slider img {
     width: 100%;
 }
+
+a.facebook i,
+a.vk i,
+a.odnoklassniki i {
+    font-family: FontAwesome, sans-serif !important;
+    margin-right: 30px;
+}
+
+.login-carcass .modal-body .input-row a.facebook {
+    font-family: "Arial Regular", sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    background: #5181b7;
+    text-decoration: none;
+    padding: 10px 30px;
+    border: 1px solid #5181b7;
+    display: block;
+    margin-bottom: 10px;
+
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.login-carcass .modal-body .input-row a.facebook:hover {
+    background: transparent;
+    color: #5181b7;
+
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.login-carcass .modal-body .input-row a.vk {
+    font-family: "Arial Regular", sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    background: #5181b7;
+    text-decoration: none;
+    padding: 10px 30px;
+    border: 1px solid #5181b7;
+    display: block;
+    margin-bottom: 10px;
+
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.login-carcass .modal-body .input-row a.vk:hover {
+    background: transparent;
+    color: #5181b7;
+
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.login-carcass .modal-body .input-row a.odnoklassniki {
+    font-family: "Arial Regular", sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    background: #ee8208;
+    text-decoration: none;
+    padding: 10px 30px;
+    border: 1px solid #ee8208;
+    display: block;
+
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.login-carcass .modal-body .input-row a.odnoklassniki:hover {
+    background: transparent;
+    color: #ee8208;
+
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}

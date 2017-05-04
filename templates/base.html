@@ -1,11 +1,13 @@
 {% load staticfiles %}
 {% load helper %}
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} | TumaR 24</title>
     {% block extra_stylesheets %}{% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
@@ -200,7 +202,10 @@
                     <div class="input-row">
                         <span>Вход через:</span>
                     </div>
-                    <div class="input-row">
+                    <div class="input-row group">
+                        <a href="{% provider_login_url 'facebook' method='oauth2' %}" class="facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>
+                        <a href="{% provider_login_url 'vk' method='oauth2' %}" class="vk"><i class="fa fa-vk" aria-hidden="true"></i> Вконтакте</a>
+                        <a href="{% provider_login_url 'odnoklassniki' method='oauth2' %}" class="odnoklassniki"><i class="fa fa-odnoklassniki" aria-hidden="true"></i> Одноклассники</a>
                     </div>
                 </form>
             </div>
