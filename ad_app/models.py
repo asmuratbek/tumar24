@@ -5,7 +5,7 @@ import datetime
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from geoposition.fields import GeopositionField
-from django.contrib.auth.models import User as BaseUser
+from users_app.models import Users as BaseUser
 from categories.models import Category
 
 # Create your models here.

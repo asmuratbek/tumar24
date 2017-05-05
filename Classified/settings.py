@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.odnoklassniki',
-    'allauth.socialaccount.providers.vk'
+    'allauth.socialaccount.providers.vk',
+    'users_app'
 ]
 
 SITE_ID = 1
@@ -200,7 +201,6 @@ GEOPOSITION_MARKER_OPTIONS = {
     }
 }
 
-
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'METHOD': 'oauth2',
@@ -221,8 +221,10 @@ SOCIALACCOUNT_PROVIDERS = {
             'updated_time',
         ],
         'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': 'path.to.callable',
-        'VERIFIED_EMAIL': False,
+        'VERIFIED_EMAIL': True,
         'VERSION': 'v2.4',
     }
 }
+
+AUTH_USER_MODEL = 'users_app.Users'
+LOGIN_REDIRECT_URL = '/'
