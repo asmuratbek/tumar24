@@ -1,9 +1,10 @@
+# coding=utf-8
 import unicodedata
 from django import forms
-from django.contrib.auth import password_validation
+from django.contrib.auth import password_validation, get_user_model, authenticate
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.template.defaultfilters import capfirst
 from django.utils.translation import ugettext, ugettext_lazy as _
-
 from .models import Users
 
 
@@ -24,18 +25,18 @@ class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(
         label=_("Password"),
         strip=False,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}),
     )
     password2 = forms.CharField(
         label=_("Password confirmation"),
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}),
         strip=False,
         help_text=_("Enter the same password as before, for verification."),
     )
 
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
-        self.fields[self._meta.model.USERNAME_FIELD].widget.attrs.update({'autofocus': ''})
+        self.fields[self._meta.model.USERNAME_FIELD].widget.attrs.update({'autofocus': '', 'placeholder': 'Email'})
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -85,3 +86,13 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
+class LoginForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'autofocus': '', 'placeholder': 'Email'}), required=True)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}), required=True, strip=False)
+
+
+class RegisterForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}), required=True)
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}), required=True, strip=False)
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), required=True,
+                                strip=False)

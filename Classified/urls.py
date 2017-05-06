@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^category/', include('categories.urls', namespace='categories')),
     url(r'^fixtures/(?P<thread>\w+)$', app_views.fixtures, name='fixtures'),
     url(r'^ad/', include('ad_app.urls', namespace='ad')),
+    url(r'^user/', include('users_app.urls', namespace='users')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

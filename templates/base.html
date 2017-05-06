@@ -32,7 +32,7 @@
         </div>
         <div class="user-functions">
             <ul>
-                <li><a href="#" class="auth-trigger">Войти</a> | <a href="#" class="auth-trigger">Регистрация</a></li>
+                <li>{% if is_auth %}{{ request.user }} | <a href="{% url 'users:users_logout' %}">Выйти</a>{% else %}<a href="#" class="auth-trigger">Войти</a> | <a href="#" class="auth-trigger">Регистрация</a>{% endif %}</li>
                 <li><a href="#" class="add-ad-link" data-target="#ad-modal">Добавить объявление</a></li>
             </ul>
         </div>
@@ -188,13 +188,19 @@
         </div>
         <div class="modal-body">
             <div class="wrap-left">
-                <form action="#" method="POST">
+                <form action="{% url 'users:users_login' %}" method="POST" id="login_form">
+                    {% csrf_token %}
                     <div class="wrap-title">Вход</div>
-                    <div class="input-row">
-                        <input type="email" placeholder="Email">
+                    <div class="input-row" id="login-errors">
+                        <span class="form-error">Ошибка</span>
                     </div>
                     <div class="input-row">
-                        <input type="password" placeholder="Пароль">
+                        {#<input type="email" placeholder="Email">#}
+                        {{ login_form.email }}
+                    </div>
+                    <div class="input-row">
+                        {#<input type="password" placeholder="Пароль">#}
+                        {{ login_form.password }}
                     </div>
                     <div class="input-row">
                         <button type="submit">Вход</button>
@@ -211,22 +217,38 @@
             </div>
             <div class="delimiter"></div>
             <div class="wrap-right">
-                <form action="#" method="POST">
+                <form action="{% url 'users:users_register' %}" method="POST" id="register-form">
+                    {% csrf_token %}
                     <div class="wrap-title">Регистрация</div>
-                    <div class="input-row">
-                        <input type="email" placeholder="Email">
+                    <div class="input-row" id="register-errors">
+                        <span class="form-error">Ошибка</span>
                     </div>
                     <div class="input-row">
-                        <input type="password" placeholder="Пароль">
+                        {#<input type="email" placeholder="Email">#}
+                        {{ register_form.email }}
                     </div>
                     <div class="input-row">
-                        <input type="password" placeholder="Повторите пароль">
+                        {#<input type="password" placeholder="Пароль">#}
+                        {{ register_form.password1 }}
+                    </div>
+                    <div class="input-row">
+                        {#<input type="password" placeholder="Повторите пароль">#}
+                        {{ register_form.password2 }}
                     </div>
                     <div class="input-row">
                         <button type="submit">Регистрация</button>
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" id="email-sent-modal">
+    <div class="login-carcass">
+        <span class="md-close">Закрыть</span>
+        <div class="modal-body">
+            <p>Мы отправили на вашу почту письмо с ссылкой на подтверждение аккаунта.</p>
+            <p>Проверьте пожалуйста. Спасибо</p>
         </div>
     </div>
 </div>

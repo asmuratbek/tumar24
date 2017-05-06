@@ -3,14 +3,21 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 from .models import *
 from ad_app.models import Ad
+from users_app.forms import LoginForm, RegisterForm
 # from app.views import generate_view_params
 
 # Create your views here.
 
 
 def generate_view_params(request):
+    is_auth = False
+    if request.user and not request.user.is_anonymous:
+        is_auth = True
     params = {
-        'categories': get_categories()
+        'categories': get_categories(),
+        'is_auth': is_auth,
+        'login_form': LoginForm,
+        'register_form': RegisterForm
     }
     return params
 

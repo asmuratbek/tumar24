@@ -1,5 +1,8 @@
-DB_NAME = 'c_a'
+DB_NAME = 'classified'
 DB_USER = 'root'
 DB_PASS = ''
 
 ROOT_FOLDER = 'Classified'
+
+EMAIL_USER = 'okay11007@gmail.com'
+EMAIL_PASSWORD = 'Afrodita97'

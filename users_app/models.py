@@ -12,3 +12,4 @@ class Users(AbstractUser):
     username = models.CharField(verbose_name='Логин', null=True, blank=True, max_length=255)
     REQUIRED_FIELDS = ['username']
     USERNAME_FIELD = 'email'
+    email_token = models.CharField(max_length=255, verbose_name='Токен', null=True, blank=True)

@@ -27,8 +27,10 @@ function loadScript(url, callback, css) {
     }
 
     script.src = url;
-    script.onreadystatechange = callback;
-    script.onload = callback;
+    if(callback != null || callback != undefined) {
+        script.onreadystatechange = callback;
+        script.onload = callback;
+    }
 
     body.appendChild(script);
 }
@@ -41,14 +43,16 @@ function Modal(options) {
     function init() {
         modal = $(modal);
         carcass = $(modal).find(carcass);
-        trigger = $(trigger);
+        if(trigger != null) {
+            trigger = $(trigger);
 
-        $(trigger).each(function (i, obj) {
-            $(obj).on('click', function (event) {
-                event.preventDefault();
-                openModal();
+            $(trigger).each(function (i, obj) {
+                $(obj).on('click', function (event) {
+                    event.preventDefault();
+                    openModal();
+                });
             });
-        });
+        }
 
         $(carcass).find('.md-close').on('click', function (event) {
             event.preventDefault();
@@ -139,10 +143,38 @@ $(document).ready(function () {
 // Authenticate
 
 $(document).ready(function () {
-    var loginModal = new Modal({
-        element: '#auth-modal',
-        carcass: '.login-carcass',
-        triggers: '.auth-trigger'
-    });
-    loginModal.init();
+    var authTrigger = $('.auth-trigger').length;
+    if(authTrigger > 0) {
+        var loginModal = new Modal({
+            element: '#auth-modal',
+            carcass: '.login-carcass',
+            triggers: '.auth-trigger'
+        });
+        loginModal.init();
+
+        loadScript(pathToLibs + '/app/user.auth.js', function () {
+            var login = new UserAuthentication({
+                form: $('#login_form'),
+                errorContainer: $('#login-errors')
+            });
+            login.init();
+
+            var register = new UserAuthentication({
+                form: $('#register-form'),
+                errorContainer: $('#register-errors')
+            });
+            register.init();
+        });
+
+        $(document).on('emailSent', function (event) {
+            var sentModal = new Modal({
+                element: '#email-sent-modal',
+                carcass: '.login-carcass',
+                triggers: null
+            });
+            sentModal.init();
+            loginModal.closeModal();
+            sentModal.openModal();
+        });
+    }
 });
