@@ -22,9 +22,15 @@
                     </div>
                     <div class="form">
                         <form action="{% url 'users:users_login' %}" method="POST">
-                            {{ form.email }}
-                            {{ form.password }}
-                            <button type="submit">Войти</button>
+                            <div class="input-row">
+                                {{ form.email }}
+                            </div>
+                            <div class="input-row">
+                                {{ form.password }}
+                            </div>
+                            <div class="input-row">
+                                <button type="submit">Войти</button>
+                            </div>
                         </form>
                     </div>
                 {% elif reason == 'does_not_exists' %}
@@ -33,15 +39,23 @@
                     </div>
                     <div class="form">
                         <form action="{% url 'users:users_register' %}" method="POST">
-                            {{ form.email }}
-                            {{ form.password1 }}
-                            {{ form.password2 }}
-                            <button type="submit">Зарегистрироваться</button>
+                            <div class="input-row">
+                                {{ form.email }}
+                            </div>
+                            <div class="input-row">
+                                {{ form.password1 }}
+                            </div>
+                            <div class="input-row">
+                                {{ form.password2 }}
+                            </div>
+                            <div class="input-row">
+                                <button type="submit">Зарегистрироваться</button>
+                            </div>
                         </form>
                     </div>
                 {% else %}
                     <div class="help-text">
-                        {{ message }}
+                        {{ message|safe }}
                     </div>
                 {% endif %}
             {% endif %}

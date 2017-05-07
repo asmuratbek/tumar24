@@ -16,8 +16,8 @@ def generate_view_params(request):
     params = {
         'categories': get_categories(),
         'is_auth': is_auth,
-        'login_form': LoginForm,
-        'register_form': RegisterForm
+        'app_login_form': LoginForm,
+        'app_register_form': RegisterForm
     }
     return params
 

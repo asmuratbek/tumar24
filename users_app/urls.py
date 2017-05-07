@@ -28,4 +28,9 @@ urlpatterns = [
         users_email_confirm_result,
         name='users_confirm_result'
     ),
+    url(
+        r'^password/set$',
+        set_user_password,
+        name='users_set_password'
+    ),
 ]

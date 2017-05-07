@@ -96,3 +96,12 @@ class RegisterForm(forms.Form):
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}), required=True, strip=False)
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), required=True,
                                 strip=False)
+
+
+class SetPasswordForm(forms.Form):
+    password1 = forms.CharField(max_length=255, strip=False, widget=forms.PasswordInput(
+        attrs={'placeholder': 'Пароль'}
+    ), label=_("Password"))
+    password2 = forms.CharField(max_length=255, strip=False, widget=forms.PasswordInput(
+        attrs={'placeholder': 'Повторите пароль'}
+    ), label=_("Password confirmation"))

@@ -82,7 +82,9 @@ function Modal(options) {
     }
 
     return {
-        init: init
+        init: init,
+        openModal: openModal,
+        closeModal: closeModal
     }
 }
 

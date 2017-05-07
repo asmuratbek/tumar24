@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+
+from django.urls import reverse
+
 from parameters import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -227,10 +230,11 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 AUTH_USER_MODEL = 'users_app.Users'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/user/password/set'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
 
 ACCOUNT_USERNAME_REQUIRED = False
 

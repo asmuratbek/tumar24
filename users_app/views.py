@@ -2,15 +2,16 @@
 import threading
 from datetime import datetime
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.contrib.auth.views import logout
 from django.template import loader
 from django.urls import reverse
 
 from categories.views import generate_view_params
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, SetPasswordForm
 from .models import Users
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -78,18 +79,18 @@ def users_register(request):
                     _password = urlsafe_base64_encode(password1)
 
                     template = loader.get_template('app/partial/confirm_email.html')
-                    contexts = dict(
-                        link=SITE_PROTOCOL +
-                             SITE_URL +
-                             reverse('users:users_confirm',
-                                     kwargs={'uidb64': uid, 'token': token, 'password': _password})
-                    )
-
+                    contexts = {
+                        'link': SITE_PROTOCOL + SITE_URL + reverse('users:users_confirm',
+                                                                   kwargs={'uidb64': uid, 'token': token,
+                                                                           'password': _password})
+                    }
+                    print contexts
+                    response = template.render(contexts, request)
                     thread = threading.Thread(
                         target=user.email_user,
                         args=(
                             u'Активация пользователя | TumaR24',
-                            template.render(request, contexts)
+                            response
                         )
                     )
                     thread.start()
@@ -125,6 +126,7 @@ def users_email_confirm(request, uidb64, token, password):
                             login(request, user_cache)
                             user.email_token = token
                             user.save()
+
                             return HttpResponseRedirect(
                                 reverse('users:users_confirm_result', kwargs={'success': True})
                             )
@@ -138,7 +140,8 @@ def users_email_confirm(request, uidb64, token, password):
                         email_confirm_messages['invalid']
                     )
             return HttpResponseRedirect(
-                reverse('users:users_confirm_result', kwargs={'success': False}) + '?message=' + ''
+                reverse('users:users_confirm_result', kwargs={'success': False}) + '?message=' +
+                email_confirm_messages['deprecated_token']
             )
         except ObjectDoesNotExist:
             return HttpResponseRedirect(
@@ -167,11 +170,11 @@ def users_email_confirm_result(request, success):
             temp_params['reason'] = 'inactive'
         if message == email_confirm_messages['invalid']:
             temp_params['message'] = u'Мы не смогли вас авторизовать, пожалуйста авторизуйтесь'
-            temp_params['login_form'] = LoginForm
+            temp_params['form'] = LoginForm
             temp_params['reason'] = 'invalid'
         if message == email_confirm_messages['does_not_exists']:
             temp_params['message'] = u'Мы не смогли найти этого пользователя, попробуйте зарегистрироваться заново'
-            temp_params['register_form'] = RegisterForm
+            temp_params['form'] = RegisterForm
             temp_params['reason'] = 'does_not_exists'
         if message == email_confirm_messages['invalid_data']:
             temp_params['message'] = u'Данные для активации аккаунта неправильные'
@@ -182,3 +185,31 @@ def users_email_confirm_result(request, success):
         params.update(temp_params)
 
     return render(request, 'app/email_verify.html', params)
+
+
+@login_required
+def set_user_password(request):
+    form = SetPasswordForm(request.POST)
+    params = {
+        'set_password_form': form
+    }
+    if request.POST:
+        if form.is_valid():
+            pass1 = form.cleaned_data['password1']
+            pass2 = form.cleaned_data['password2']
+
+            if pass1 and pass2 and pass1 == pass2:
+                try:
+                    current_user = Users.objects.get(email=request.user.email)
+                    current_user.password = make_password(pass1)
+                    current_user.save()
+                    user = authenticate(email=current_user.email, password=pass1)
+                    login(request, user)
+                    params.update(dict(result=True, message='Ваш пароль успешно изменен!'))
+                except ObjectDoesNotExist:
+                    params.update(dict(result=False, message='Мы не нашли пользователя'))
+            else:
+                params.update(dict(result=False, message='Пароли не сопадают'))
+    print params
+    params.update(generate_view_params(request))
+    return render(request, 'app/partial/set_password.html', params)

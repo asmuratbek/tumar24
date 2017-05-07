@@ -196,11 +196,11 @@
                     </div>
                     <div class="input-row">
                         {#<input type="email" placeholder="Email">#}
-                        {{ login_form.email }}
+                        {{ app_login_form.email }}
                     </div>
                     <div class="input-row">
                         {#<input type="password" placeholder="Пароль">#}
-                        {{ login_form.password }}
+                        {{ app_login_form.password }}
                     </div>
                     <div class="input-row">
                         <button type="submit">Вход</button>
@@ -225,15 +225,15 @@
                     </div>
                     <div class="input-row">
                         {#<input type="email" placeholder="Email">#}
-                        {{ register_form.email }}
+                        {{ app_register_form.email }}
                     </div>
                     <div class="input-row">
                         {#<input type="password" placeholder="Пароль">#}
-                        {{ register_form.password1 }}
+                        {{ app_register_form.password1 }}
                     </div>
                     <div class="input-row">
                         {#<input type="password" placeholder="Повторите пароль">#}
-                        {{ register_form.password2 }}
+                        {{ app_register_form.password2 }}
                     </div>
                     <div class="input-row">
                         <button type="submit">Регистрация</button>
@@ -246,6 +246,9 @@
 <div class="overlay" id="email-sent-modal">
     <div class="login-carcass">
         <span class="md-close">Закрыть</span>
+        <div class="modal-header">
+            Спасибо за регистрацию =)
+        </div>
         <div class="modal-body">
             <p>Мы отправили на вашу почту письмо с ссылкой на подтверждение аккаунта.</p>
             <p>Проверьте пожалуйста. Спасибо</p>

@@ -6,7 +6,7 @@ from django.shortcuts import render
 from categories.views import get_categories, generate_view_params
 from categories.models import Category
 from ad_app.models import Ad, Media
-from django.contrib.auth.models import User
+from users_app.models import Users
 from Classified.settings import STATIC_ROOT
 # Create your views here.
 
@@ -41,11 +41,12 @@ def fixtures(request, thread):
             item.city = u'Москва'
             item.category = Category.objects.filter(parent=None).first()
             item.phone = u'+996 707 330 726'
-            item.user = User.objects.filter().first()
+            item.user = Users.objects.filter().first()
             item.price = 15000
             item.save()
             for image in images:
                 item.media.add(image)
         return JsonResponse(dict(success=True))
-
+    if thread == 'categories':
+        pass
     return JsonResponse(dict(success=False, messages='No thread are selected'))
