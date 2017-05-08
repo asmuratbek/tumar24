@@ -19,3 +19,5 @@ tests/report/
 .idea
 /static
 Classified/parameters.py
+
+/start.sh

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles i18n account socialaccount %}
+<!--</ul>-->
+
+{% block title %}Авторизация{% endblock %}
+
+{% block content %}
+    <div class="change-password">
+        <div class="bread-crumbs">
+            <ul>
+                <li><a href="{% url 'index' %}">Главная</a><span>></span></li>
+                <li><a href="/accounts/login">Авторизация</a><span>></span></li>
+                <li class="active"><a href="">Изменение пароля</a></li>
+            </ul>
+        </div>
+        <section>
+            <div class="help-text">
+                Войдите в свой аккаунт
+            </div>
+            <div class="form">
+                {% get_providers as socialaccount_providers %}
+
+                <form method="POST" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    <div class="thanks-text" style="font-size: 12px;">
+                        <p>У вас нет аккаунта? жмякай сюда <a href="{{ signup_url }}">Регистрация</a></p>
+                    </div>
+                    <div class="input-row">
+                        <input type="email" name="login" placeholder="Ваша почта" required>
+                    </div>
+                    <div class="input-row">
+                        <input type="password" name="password" placeholder="Пароль" required>
+                    </div>
+                    <div class="input-row">
+                        <button type="submit">Войти</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

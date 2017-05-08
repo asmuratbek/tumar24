@@ -6,4 +6,4 @@ from django.apps import AppConfig
 
 class AdAppConfig(AppConfig):
     name = 'ad_app'
-    verbose_name = 'Статьи'
+    verbose_name = 'Объявления'

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}{{ category.title }}{% endblock %}
+
+{% block content %}
+    <div class="last-ads">
+        <div class="bread-crumbs">
+            <ul>
+                <li><a href="{% url 'index' %}">Главная</a><span>></span></li>
+                <li><a href="#">Категории</a><span>></span></li>
+                {% if category.parent %}
+                    <li><a href="{% url 'categories:parent_category' category=category.parent.slug %}">{{ category.parent.title }}</a><span>></span></li>
+                    <li class="active"><a href="{% url 'categories:child_category' category=category.parent.slug child=category.slug %}">{{ category.title }}</a></li>
+                {% else %}
+                    <li class="active"><a href="{% url 'categories:parent_category' category=category.slug %}">{{ category.title }}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="ads-header">
+            <h2>Последние объявления</h2>
+        </div>
+        <div class="ads-content">
+            <section>
+                {% for ad in ads|slice:"0:6" %}
+                    {% include 'app/partial/_ads_index.html' %}
+                {% endfor %}
+            </section>
+            <div class="middle-banner">
+                <a href="#">
+                    <img src="{% static  'images/banners/middle-banner.png' %}">
+                </a>
+            </div>
+            <section>
+                {% for ad in ads|slice:"6:12" %}
+                    {% include 'app/partial/_ads_index.html' %}
+                {% endfor %}
+            </section>
+        </div>
+        <div class="view-more">
+            <ul class="pagination">
+                {% if pagination.has_previous %}
+                    <li><a href="?page={{ pagination.previous_page_number }}"><<</a></li>
+                {% endif %}
+                {% for page in pagination.paginator.page_range %}
+                    <li {% if page == pagination.index %}class="active"{% endif %}><a href="?page={{ page }}">{{ page }}</a></li>
+                {% endfor %}
+                {% if pagination.has_next %}
+                    <li><a href="?page={{ pagination.next_page_number }}">>></a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="last-posts">
+        <div class="post-header"><h2>Последние новости</h2></div>
+        <div class="post-content">
+            {% include 'app/partial/_news_index.html' %}
+            <div class="side-banners">
+                <div class="one-banner">
+                    <a href="#">
+                        <img src="{% static  'images/banners/side-banner.png' %}">
+                    </a>
+                </div>
+                <div class="one-banner">
+                    <a href="#">
+                        <img src="{% static  'images/banners/side-banner-2.png' %}">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

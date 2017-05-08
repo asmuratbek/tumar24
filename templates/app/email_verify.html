@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Потверждение почты{% endblock %}
+{% block content %}
+    <div class="change-password">
+        <div class="bread-crumbs">
+            <ul>
+                <li><a href="#">Главная</a><span>></span></li>
+                <li><a href="#">Объявления</a><span>></span></li>
+                <li class="active"><a href="#">Акция!!! 3 айлык регистрация 1000р!!!</a></li>
+            </ul>
+        </div>
+        <section>
+            {% if success %}
+                <div class="help-text">
+                    Ваш аккаунт успешно активирован! Добро пожаловать на наш сайт =)
+                </div>
+            {% else %}
+                {% if reason == 'invalid' %}
+                    <div class="help-text">
+                        {{ message }}
+                    </div>
+                    <div class="form">
+                        <form action="{% url 'users:users_login' %}" method="POST">
+                            <div class="input-row">
+                                {{ form.email }}
+                            </div>
+                            <div class="input-row">
+                                {{ form.password }}
+                            </div>
+                            <div class="input-row">
+                                <button type="submit">Войти</button>
+                            </div>
+                        </form>
+                    </div>
+                {% elif reason == 'does_not_exists' %}
+                    <div class="help-text">
+                        {{ message }}
+                    </div>
+                    <div class="form">
+                        <form action="{% url 'users:users_register' %}" method="POST">
+                            <div class="input-row">
+                                {{ form.email }}
+                            </div>
+                            <div class="input-row">
+                                {{ form.password1 }}
+                            </div>
+                            <div class="input-row">
+                                {{ form.password2 }}
+                            </div>
+                            <div class="input-row">
+                                <button type="submit">Зарегистрироваться</button>
+                            </div>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="help-text">
+                        {{ message|safe }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        </section>
+    </div>
+    <div class="last-posts">
+        <div class="side-banners">
+            <div class="one-banner">
+                <a href="#">
+                    <img src="{% static 'images/banners/side-banner.png' %}">
+                </a>
+            </div>
+            <div class="one-banner">
+                <a href="#">
+                    <img src="{% static 'images/banners/side-banner-2.png' %}">
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

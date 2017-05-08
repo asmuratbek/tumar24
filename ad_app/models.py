@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import datetime
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from geoposition.fields import GeopositionField
-from django.contrib.auth.models import User as BaseUser
+from users_app.models import Users as BaseUser
+from categories.models import Category
 
 # Create your models here.
 
@@ -21,7 +23,7 @@ class Ad(models.Model):
     country = models.CharField(max_length=255, verbose_name='Страна')
     city = models.CharField(max_length=255, verbose_name='Город')
 
-    category = models.ForeignKey('Category', verbose_name='Категория',
+    category = models.ForeignKey(Category, verbose_name='Категория',
                                  help_text='<b style="color: #a2a6ab;">Вы можете выбрать сразу дочернюю категорию</b>')
 
     phone = models.CharField(max_length=255, verbose_name='Телефоны')
@@ -35,6 +37,8 @@ class Ad(models.Model):
     views = models.IntegerField(verbose_name='Просмотры', default=0, null=True, blank=True)
 
     price = models.IntegerField(default=0, verbose_name='Цена', null=True, blank=True)
+
+    media = models.ManyToManyField('Media', verbose_name='Картинки', help_text='Рекомендуется минимум 2 шт.', blank=True)
 
     def __unicode__(self):
         return self.title
@@ -52,28 +56,6 @@ class Coordinates(models.Model):
         return str(self.position)
 
 
-class Category(models.Model):
-    class Meta:
-        db_table = 'category'
-        verbose_name = 'Категорию'
-        verbose_name_plural = 'Категории'
-
-    title = models.CharField(max_length=255, verbose_name='Наименование')
-    parent = models.ForeignKey('Category', verbose_name='Родительская категория', null=True, blank=True)
-    description = RichTextUploadingField(verbose_name='Описание категории', null=True, blank=True)
-    meta_title = models.CharField(max_length=255, verbose_name='Meta наименование', null=True, blank=True)
-    meta_description = models.CharField(max_length=255, verbose_name='Meta Описание', null=True, blank=True)
-    meta_key_words = models.CharField(max_length=255, verbose_name='Meta Ключевые слова', null=True, blank=True,
-                                      help_text='<b style="color: #a2a6ab;">Вводить через запятую</b>')
-
-    def save(self, *args, **kwargs):
-        self.meta_title = self.title
-        super(Category, self).save(*args, **kwargs)
-
-    def __unicode__(self):
-        return self.title
-
-
 class Comment(models.Model):
     class Meta:
         db_table = 'comment'
@@ -86,3 +68,24 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return str(self.body)[:20]
+
+
+class Media(models.Model):
+    class Meta:
+        verbose_name = 'Медиа'
+        verbose_name_plural = 'Медиа'
+
+    media_file = models.FileField(upload_to='', verbose_name='Медиа файл')
+    description = models.CharField(max_length=255, verbose_name='Описание', null=True, blank=True,
+                                   help_text='Необязательное поле')
+
+    def get_absolute_url(self):
+        return self.media_file.url
+
+    def save(self, *args, **kwargs):
+        if not self.description:
+            self.description = 'Uploaded: ' + str(datetime.date.today())
+        super(Media, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return str(self.media_file)
