@@ -9,7 +9,7 @@
         <div class="bread-crumbs">
             <ul>
                 <li><a href="{% url 'index' %}">Главная</a><span>></span></li>
-                <li><a href="#">Объявления</a><span>></span></li>
+                <li><a href="{% url 'ad:all_ads' %}">Объявления</a><span>></span></li>
                 <li class="active"><a href="{% url 'ad:one_ad' ad_id=ad.id %}">{{ ad.title }}</a></li>
             </ul>
         </div>
@@ -22,7 +22,7 @@
             </div>
             <div class="ad-info">
                 <ul>
-                    <li>Метро: <a href="#">Кантемировская</a></li>
+                    <li>Метро: <a href="#">{{ ad.metro }}</a></li>
                     <li>Телефоны: <span>{{ ad.phone }}</span></li>
                 </ul>
             </div>
@@ -41,19 +41,19 @@
                 {% endfor %}
             </div>
             <div class="ad-description">
-                {{ ad.description }}
+                {{ ad.description|safe }}
             </div>
             <div class="ad-price">
                 <div class="pre">Цена:</div>
                 {{ ad.price }}
             </div>
-            <div class="map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d11695.61803915153!2d74.576901!3d42.87485959999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2skg!4v1493116090945" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+            <div class="map" id="map_canvas" style="width: 785px; height: 190px;">
+
             </div>
 
             <div class="navigations group">
-                <span><a href="#"><< Предыдущее объявление</a></span>
-                <span><a href="#">Следущее объявление >></a></span>
+                {% if prev %}<span><a href="{% url 'ad:one_ad' ad_id=prev %}"><< Предыдущее объявление</a></span>{% endif %}
+                {% if next %}<span><a href="{% url 'ad:one_ad' ad_id=next %}">Следущее объявление >></a></span>{% endif %}
             </div>
 
             <div class="notification warning">
@@ -81,4 +81,15 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extra_javascripts %}
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHFQIQAbbG3k34jXG-reyvJ8YUyCSIYO0&callback=initMap"></script>
+    <script>
+        var haightAshbury = {
+            lat: parseFloat('{{ ad.location.position.latitude }}'.replace(',', '.')),
+            lng: parseFloat('{{ ad.location.position.longitude }}'.replace(',', '.'))
+        };
+    </script>
+    <script src="{% static 'js/app/one.ad.map.js' %}"></script>
 {% endblock %}

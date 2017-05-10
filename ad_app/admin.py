@@ -8,7 +8,7 @@ from ad_app.models import *
 # Register your models here.
 
 class AdAdmin(admin.ModelAdmin):
-    list_display = 'title price country city category'.split()
+    list_display = 'title price city category'.split()
     list_filter = 'category created_at'.split()
 
 

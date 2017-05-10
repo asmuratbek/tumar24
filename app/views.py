@@ -8,6 +8,7 @@ from categories.models import Category
 from ad_app.models import Ad, Media
 from users_app.models import Users
 from Classified.settings import STATIC_ROOT
+from .models import Metro, City
 # Create your views here.
 
 
@@ -23,6 +24,12 @@ def index(request):
 def fixtures(request, thread):
     if thread == 'ads':
         images = list()
+        city = City()
+        city.title = u'Москва'
+        city.save()
+        metro = Metro()
+        metro.title = u'Пушкино'
+        metro.save()
         thumbnails = [
             'good-1.png',
             'good-2.png',
@@ -37,14 +44,14 @@ def fixtures(request, thread):
             item = Ad()
             item.title = u'Test title ' + str(random.randrange(1000, 9999))
             item.description = u'Lorem ipsum dolor sit amet'
-            item.country = u'Россия'
-            item.city = u'Москва'
+            item.metro = metro
+            item.city = city
             item.category = Category.objects.filter(parent=None).first()
             item.phone = u'+996 707 330 726'
             item.user = Users.objects.filter().first()
             item.price = 15000
             item.save()
-            for image in images:
+            for image in Media.objects.all():
                 item.media.add(image)
         return JsonResponse(dict(success=True))
     if thread == 'categories':

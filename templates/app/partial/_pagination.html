@@ -1,0 +1,14 @@
+{% load ad_extensions %}
+{% if pagination.paginator.num_pages > 1 %}
+    <ul class="pagination" id="pagination">
+        {% if pagination.has_previous %}
+            <li><a href="?page={{ pagination.previous_page_number }}" id="prev-page"><<</a></li>
+        {% endif %}
+        {% for page in pagination.paginator.page_range %}
+            <li {% if page == pagination.number %}class="active"{% endif %}><a href="?page={{ page }}">{{ page }}</a></li>
+        {% endfor %}
+        {% if pagination.has_next %}
+            <li><a href="?page={{ pagination.next_page_number }}" id="next-page">>></a></li>
+        {% endif %}
+    </ul>
+{% endif %}
