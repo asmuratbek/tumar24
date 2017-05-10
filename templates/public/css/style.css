@@ -747,9 +747,6 @@ footer .copyright h2 a:hover {
     display: inline-block;
     vertical-align: top;
     margin-right: 6px;
-    width: 37px;
-    height: 32px;
-    border: 1px solid #acacac;
     text-align: center;
 
     -webkit-transition: all 0.5s;
@@ -760,8 +757,7 @@ footer .copyright h2 a:hover {
     cursor: pointer;
 }
 
-.view-more .pagination li.active,
-.view-more .pagination li:hover {
+.view-more .pagination li.active a {
     border: 1px solid #2757ae;
     color: #2757ae;
 
@@ -772,16 +768,9 @@ footer .copyright h2 a:hover {
     transition: all 0.5s;
 }
 
-.view-more .pagination li.active a,
-.view-more .pagination li:hover a {
-    color: #2757ae;
-
-    -webkit-transition: color 0.5s;
-    -moz-transition: color 0.5s;
-    -ms-transition: color 0.5s;
-    -o-transition: color 0.5s;
-    transition: color 0.5s;
-}
+/*.view-more .pagination li.active a,*/
+/*.view-more .pagination li:hover a {*/
+/*}*/
 
 .view-more .pagination li:last-child {
     margin-right: 0;
@@ -793,6 +782,10 @@ footer .copyright h2 a:hover {
     color: #000;
     text-decoration: none;
     font-weight: 600;
+    display: block;
+    width: 37px;
+    height: 32px;
+    border: 1px solid #acacac;
 
     -webkit-transition: color 0.5s;
     -moz-transition: color 0.5s;
@@ -803,6 +796,14 @@ footer .copyright h2 a:hover {
 
 .view-more .pagination li a:hover {
     text-decoration: none;
+    border: 1px solid #2757ae;
+    color: #2757ae;
+
+    -webkit-transition: color 0.5s;
+    -moz-transition: color 0.5s;
+    -ms-transition: color 0.5s;
+    -o-transition: color 0.5s;
+    transition: color 0.5s;
 }
 
 .no-scroll {
@@ -862,10 +863,11 @@ footer .copyright h2 a:hover {
 .modal-carcass {
     display: block;
     width: 731px;
-    height: 758px;
+    min-height: 758px;
     position: relative;
     margin: 100px auto 0 auto;
     background: #ffffff;
+    padding-bottom: 20px;
 
     -webkit-animation-name: appear;
     -moz-animation-name: appear;
@@ -911,7 +913,7 @@ footer .copyright h2 a:hover {
     cursor: pointer;
     font-family: "Arial Regular", sans-serif;
     font-size: 12px;
-    color: #818181;
+    color: #000;
     background: transparent;
 }
 
@@ -973,6 +975,39 @@ footer .copyright h2 a:hover {
     color: #000;
 }
 
+.modal-carcass .modal-body form .input-row .django-ckeditor-widget {
+    width: 100%;
+}
+
+.modal-carcass .modal-body form .input-row button {
+    background: #5181b7;
+    border: 1px solid #5181b7;
+    color: #ffffff;
+    cursor: pointer;
+    margin-left: 15px;
+
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.modal-carcass .modal-body form .input-row button:hover {
+    color: #5181b7;
+    background: transparent;
+
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.modal-carcass .modal-body form .input-row .info button:focus {
+    outline: none;
+}
+
 .modal-carcass .modal-body form .input-row textarea {
     width: 100%;
     height: 93px;
@@ -1015,7 +1050,7 @@ footer .copyright h2 a:hover {
 
 .modal-carcass .modal-body form .input-row .map {
     width: 100%;
-    height: 134px;
+    height: 250px;
     position: relative;
     border: 1px solid #4f6173;
     overflow: hidden;

@@ -4,6 +4,7 @@ from django.shortcuts import render
 from .models import *
 from ad_app.models import Ad
 from users_app.forms import LoginForm, RegisterForm
+from ad_app.forms import SearchForm, AdCreationForm
 # from app.views import generate_view_params
 
 # Create your views here.
@@ -17,7 +18,9 @@ def generate_view_params(request):
         'categories': get_categories(),
         'is_auth': is_auth,
         'app_login_form': LoginForm,
-        'app_register_form': RegisterForm
+        'app_register_form': RegisterForm,
+        'search_form': SearchForm(request.GET),
+        'ad_creation_form': AdCreationForm(request.POST)
     }
     return params
 
@@ -57,3 +60,6 @@ def child_category(request, category, child):
     params.update(generate_view_params(request))
     print params
     return render(request, 'app/category.html', params)
+
+
+

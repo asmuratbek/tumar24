@@ -7,6 +7,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from geoposition.fields import GeopositionField
 from users_app.models import Users as BaseUser
 from categories.models import Category
+from app.models import Metro, City
 
 # Create your models here.
 
@@ -20,9 +21,8 @@ class Ad(models.Model):
     title = models.CharField(max_length=255, verbose_name='Наимениование')
     description = RichTextUploadingField(verbose_name='Описание')
 
-    country = models.CharField(max_length=255, verbose_name='Страна')
-    city = models.CharField(max_length=255, verbose_name='Город')
-
+    city = models.ForeignKey(City, null=True, verbose_name='Город', related_name='ad_city')
+    metro = models.ForeignKey(Metro, null=True, verbose_name='Станция метро', related_name='ad_metro')
     category = models.ForeignKey(Category, verbose_name='Категория',
                                  help_text='<b style="color: #a2a6ab;">Вы можете выбрать сразу дочернюю категорию</b>')
 
@@ -36,7 +36,7 @@ class Ad(models.Model):
     user = models.ForeignKey(BaseUser, verbose_name='Пользователь', null=True, blank=True)
     views = models.IntegerField(verbose_name='Просмотры', default=0, null=True, blank=True)
 
-    price = models.IntegerField(default=0, verbose_name='Цена', null=True, blank=True)
+    price = models.CharField(default='Договорная', verbose_name='Цена', null=True, blank=True, max_length=255)
 
     media = models.ManyToManyField('Media', verbose_name='Картинки', help_text='Рекомендуется минимум 2 шт.', blank=True)
 

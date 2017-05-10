@@ -1,6 +1,7 @@
 {% load staticfiles %}
 {% load helper %}
 {% load socialaccount %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,21 +42,26 @@
 
 <section class="body group">
     <div class="search">
-        <form action="#" method="POST">
+        <form action="{% url 'ad:search' %}" method="GET">
             <ul>
-                <li><input type="search" placeholder="Поиск по объявлениям..."></li>
+                <li>
+                    {#<input type="search" placeholder="Поиск по объявлениям...">#}
+                    {{ search_form.search_word }}
+                </li>
                 <li>
                     <label>
-                        <select>
-                            <option value>Метро</option>
-                        </select>
+                        {#<select>#}
+                            {#<option value>Метро</option>#}
+                        {#</select>#}
+                        {{ search_form.metro }}
                     </label>
                 </li>
                 <li>
                     <label>
-                        <select>
-                            <option value>Категория</option>
-                        </select>
+                        {#<select>#}
+                            {#<option value>Категория</option>#}
+                        {#</select>#}
+                        {{ search_form.categories }}
                     </label>
                 </li>
                 <li>
@@ -122,44 +128,59 @@
             Добавить объявление
         </div>
         <div class="modal-body">
-            <form action="#" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'ad:create_new_ad' %}" method="POST" enctype="multipart/form-data">
                 <div class="input-row">
                     <label>
-                        <select required>
-                            <option value>Выберите категорию</option>
-                        </select>
+                        {#<select required>#}
+                            {#<option value>Выберите категорию</option>#}
+                        {#</select>#}
+                        {% render_field ad_creation_form.category %}
                     </label>
                     <label>
-                        <select required>
-                            <option value>Выберите станцию метро</option>
-                        </select>
+                        {#<select required>#}
+                            {#<option value>Выберите станцию метро</option>#}
+                        {#</select>#}
+                        {% render_field ad_creation_form.metro %}
                     </label>
                 </div>
                 <div class="input-row">
-                    <input type="text" placeholder="Введите название объявления" name="title" required>
+                    {#<input type="text" placeholder="Введите название объявления" name="title" required>#}
+                    {% render_field ad_creation_form.title placeholder='Введите название объявления' %}
                 </div>
                 <div class="input-row group">
-                    <label class="upload" for="images">
+                    <label class="upload" for="id_images">
                         <img src="{% static  'images/upload-images.png'  %}">
                     </label>
                     <div class="info">
                         Вы можете выбрать сразу<br>
                         несколько фотографий
                     </div>
-                    <input type="file" id="images" style="display: none;" multiple>
+                    {#<input type="file" id="images" style="display: none;" multiple>#}
+                    {% render_field ad_creation_form.images multiple='' style='display: none;' %}
                 </div>
                 <div class="input-row">
-                    <input type="number" placeholder="Впишите цену">
+                    {#<input type="number" placeholder="Впишите цену">#}
+                    {% render_field ad_creation_form.price type='number' placeholder='Впишите цену' %}
                     <div class="info">
                         Если цена договорная,<br>
                         оставьте поле пустым.
                     </div>
                 </div>
                 <div class="input-row">
-                    <textarea placeholder="Описание объявления..." cols="10" required></textarea>
+                    <label>
+                        {#<select required>#}
+                            {#<option value selected>Город</option>#}
+                        {#</select>#}
+                        {% render_field ad_creation_form.city %}
+                    </label>
                 </div>
                 <div class="input-row">
-                    <input type="text" data-type="phone-number" placeholder="Впишите свой телефон" id="phone" required>
+                    {#<textarea placeholder="Описание объявления..." cols="10" required></textarea>#}
+                    {% render_field ad_creation_form.description placeholder='Описание объявления' cols='10' %}
+                </div>
+                <div class="input-row">
+                    {#<input type="text" data-type="phone-number" placeholder="Впишите свой телефон" id="phone" required>#}
+                    {% render_field ad_creation_form.phone placeholder='Впишите свой телефон' data-type='phone-number' %}
                     <div class="info">+7 - (***) - *** - ** - **</div>
                 </div>
                 <div class="input-row">
@@ -167,13 +188,15 @@
                 </div>
                 <div class="input-row">
                     <div class="map" id="choose-mark">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d11695.61803915153!2d74.576901!3d42.87485959999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2skg!4v1493116090945" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+
                     </div>
-                    <input type="text" placeholder="координаты" style="display: none;">
+                    {#<input type="text" placeholder="координаты" style="display: none;">#}
+                    {% render_field ad_creation_form.location %}
                 </div>
                 <div class="input-row">
                     <button type="submit">Добавить</button>
                 </div>
+                {% csrf_token %}
             </form>
         </div>
     </div>
@@ -256,6 +279,8 @@
     </div>
 </div>
 <script>var pathToLibs = '{% static 'js' %}', pathToSlick = '{% static 'slick' %}';</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHFQIQAbbG3k34jXG-reyvJ8YUyCSIYO0&callback=initMap"></script>
+<script src="{% static 'js/app/ad.creation.map.js' %}"></script>
 <script src="{% static  'js/jquery-3.2.1.min.js'  %}"></script>
 <script src="{% static  'js/core.js'  %}"></script>
 {% block extra_javascripts %}

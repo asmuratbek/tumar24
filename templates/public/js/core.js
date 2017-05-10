@@ -70,6 +70,10 @@ function Modal(options) {
         $(modal).on('click', function (event) {
             closeModal();
         });
+        if(map != null && map != undefined) {
+            google.maps.event.trigger(map, "resize");
+            map.setCenter(haightAshbury);
+        }
     }
 
     function closeModal() {
@@ -90,7 +94,10 @@ function Modal(options) {
 
 // ad add Modal
 $(document).ready(function() {
-
+    $('#id_images').on('change', function () {
+        var reader = new FileReader();
+        console.log($(this).val());
+    });
     var adModal = new Modal({
         element: '#ad-modal',
         carcass: '.modal-carcass',
@@ -117,13 +124,18 @@ $(document).ready(function () {
     });
 });
 
+function setPhoneMask(event) {
+    $('input[data-type="phone-number"]').each(function (i, obj) {
+        $(obj).mask('+7 - (999) - 999 - 99 - 99');
+    });
+}
+
+
 $(document).ready(function () {
     if(pathToLibs == null || pathToLibs == '' || pathToLibs == undefined) {
         pathToLibs = 'public/js';
     }
-    loadScript(pathToLibs + '/jquery.masked.min.js', function (event) {
-        $('#phone').mask('+7 - (999) - 999 - 99 - 99');
-    });
+    loadScript(pathToLibs + '/jquery.masked.min.js', setPhoneMask);
 
     var slider = $('#slider');
     if($(slider) != undefined) {
@@ -180,3 +192,91 @@ $(document).ready(function () {
         });
     }
 });
+
+
+// Pagination
+
+// $(document).ready(function () {
+//     var pagination = $('#pagination');
+//     if($(pagination).length > 0) {
+//         var pages = [];
+//         var current = null;
+//         $(pagination).find('li').each(function (i, obj) {
+//             if($(obj).find('a') != $('#prev-page') && $(obj).find('a') != $('#next-page')) {
+//                 pages.push(parseInt($(obj).find('a').text()));
+//             }
+//             if($(obj).hasClass('active')) {
+//                 current = parseInt($(obj).find('a').text());
+//             }
+//         });
+//         var newPages = [];
+//         var currentPages = [];
+//         var hasPrev = false;
+//         if(current - 2 >= 5) {
+//             var leftSide = current - 2;
+//             //noinspection JSDuplicatedDeclaration
+//             for(var i=leftSide; i < current; ++i) {
+//                 currentPages.push('<li><a href="?page=' + i + '">' + i + '</a></li>');
+//             }
+//             hasPrev = true;
+//         }
+//         if(!hasPrev && current > 5) {
+//             var side = 5 - (current - 2);
+//             //noinspection JSDuplicatedDeclaration
+//             for(var i = 5; i < 5 + side; ++i) {
+//                 currentPages.push('<li><a href="?page=' + i + '">' + i + '</a></li>');
+//             }
+//             console.log(side);
+//         }
+//         if((current + 2) <= pages[pages.length - 1] - 2) {
+//             var rightSide = current + 2;
+//             //noinspection JSDuplicatedDeclaration
+//             for(var i=current; i <= rightSide; ++i) {
+//                 if(i==current) {
+//                     currentPages.push('<li class="active"><a href="?page=' + i + '">' + i + '</a></li>');
+//                 } else {
+//                     currentPages.push('<li><a href="?page=' + i + '">' + i + '</a></li>');
+//                 }
+//             }
+//         } else {
+//             //noinspection JSDuplicatedDeclaration
+//             for(var i = current; i <= pages[pages.length - 1]; ++i) {
+//                 if(i==current) {
+//                     currentPages.push('<li class="active"><a href="?page=' + i + '">' + i + '</a></li>');
+//                 } else {
+//                     currentPages.push('<li><a href="?page=' + i + '">' + i + '</a></li>');
+//                 }
+//             }
+//         }
+//         if(current >= 2) {
+//             newPages.push('<li><a href="?page=' + (current - 1) + '" id="prev-page"><<</a></li>');
+//         }
+//         if(current >= 5) {
+//             newPages.push('<li><a href="?page=1">1</a></li>');
+//             newPages.push('<li><a href="#">...</a></li>');
+//         } else {
+//             //noinspection JSDuplicatedDeclaration
+//             for(var i=1; i < current; i++) {
+//                 newPages.push('<li><a href="?page=' + pages[i] + '">' + pages[i] + '</a></li>');
+//             }
+//         }
+//         //noinspection JSDuplicatedDeclaration
+//         for(var i=0; i < currentPages.length; ++i) {
+//             newPages.push(currentPages[i]);
+//         }
+//         if(current < pages[pages.length-1] - 2) {
+//             newPages.push('<li><a href="#">...</a></li>');
+//             newPages.push('<li><a href="?page=' + pages[pages.length - 2] + '">' + pages[pages.length - 2] + '</a></li>');
+//         }
+//         if(current < pages[pages.length - 1]) {
+//             newPages.push('<li><a href="?page=' + (current + 1) + '" id="next-page">>></a></li>');
+//         }
+//         $(pagination).html('');
+//         //noinspection JSDuplicatedDeclaration
+//         for(var i=0; i < newPages.length; ++i) {
+//             $(pagination).append(newPages[i]);
+//         }
+//         console.log(pages);
+//         console.log(newPages);
+//     }
+// });
