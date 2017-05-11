@@ -2,6 +2,8 @@
 
 {% load staticfiles %}
 
+{% load helper %}
+
 {% block title %}{{ ad.title }}{% endblock %}
 
 {% block content %}
@@ -16,9 +18,10 @@
         <section>
             <div class="title"><h1>{{ ad.title }}</h1></div>
             <div class="info">
-                <div class="views">Просмотры: {{ add.views }}</div>
+                <div class="views">Просмотры: {{ ad.views }}</div>
                 <div class="date">Дата публикации: {{ ad.created_at|date:"d.m.y" }}</div>
-                <div class="user">Пользователь: <a href="#">Аноним</a></div>
+                <div class="user">Пользователь: {% if ad.user %}<a href="#">{{ ad.user }}</a>{% else %}<a href="#">Аноним</a>{% endif %}</div>
+                {% if ad.user == request.user %}<div class="is_active">Статус: {{ ad.is_active|render_boolean }}</div>{% endif %}
             </div>
             <div class="ad-info">
                 <ul>
@@ -83,13 +86,11 @@
     </div>
 {% endblock %}
 
-{% block extra_javascripts %}
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHFQIQAbbG3k34jXG-reyvJ8YUyCSIYO0&callback=initMap"></script>
+{% block javascript_parameters %}
     <script>
-        var haightAshbury = {
+        var ad_location = {
             lat: parseFloat('{{ ad.location.position.latitude }}'.replace(',', '.')),
             lng: parseFloat('{{ ad.location.position.longitude }}'.replace(',', '.'))
         };
     </script>
-    <script src="{% static 'js/app/one.ad.map.js' %}"></script>
 {% endblock %}

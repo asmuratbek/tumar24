@@ -40,6 +40,8 @@ class Ad(models.Model):
 
     media = models.ManyToManyField('Media', verbose_name='Картинки', help_text='Рекомендуется минимум 2 шт.', blank=True)
 
+    is_active = models.BooleanField(default=True, verbose_name='Активное объявление?')
+
     def __unicode__(self):
         return self.title
 

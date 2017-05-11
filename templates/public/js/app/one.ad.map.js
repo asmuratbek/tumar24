@@ -3,7 +3,7 @@
  */
 var map = null;
 var markers = [];
-function initMap() {
+function initOneAdMap() {
     map = new google.maps.Map(document.getElementById('map_canvas'), {
         center: haightAshbury,
         zoom: 13,

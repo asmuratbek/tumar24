@@ -153,10 +153,12 @@
                     </label>
                     <div class="info">
                         Вы можете выбрать сразу<br>
-                        несколько фотографий
+                        несколько фотографий<br>
+                        <br>
+                        <span id="file-counter" style="color: red;"></span>
                     </div>
                     {#<input type="file" id="images" style="display: none;" multiple>#}
-                    {% render_field ad_creation_form.images multiple='' style='display: none;' %}
+                    {% render_field ad_creation_form.images style='opacity: 0; height: 0;' %}
                 </div>
                 <div class="input-row">
                     {#<input type="number" placeholder="Впишите цену">#}
@@ -278,11 +280,17 @@
         </div>
     </div>
 </div>
+{% block javascript_parameters %}
+    <script>
+        var ad_location = null;
+    </script>
+{% endblock %}
 <script>var pathToLibs = '{% static 'js' %}', pathToSlick = '{% static 'slick' %}';</script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHFQIQAbbG3k34jXG-reyvJ8YUyCSIYO0&callback=initMap"></script>
 <script src="{% static 'js/app/ad.creation.map.js' %}"></script>
 <script src="{% static  'js/jquery-3.2.1.min.js'  %}"></script>
 <script src="{% static  'js/core.js'  %}"></script>
+<script src="{% static 'js/app/ad.creation.functions.js' %}"></script>
 {% block extra_javascripts %}
     
 {% endblock %}

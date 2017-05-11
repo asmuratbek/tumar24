@@ -8,3 +8,10 @@ register = template.Library()
 def make_translit(value):
     print value.replace(' ', '-')
     return value.replace(' ', '-')
+
+
+@register.filter
+def render_boolean(value):
+    if value:
+        return u'Активный'
+    return u'Неактивный'

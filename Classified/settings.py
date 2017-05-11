@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.odnoklassniki',
     'allauth.socialaccount.providers.vk',
-    'users_app'
+    'users_app',
+    'hitcount'
 ]
 
 SITE_ID = 1

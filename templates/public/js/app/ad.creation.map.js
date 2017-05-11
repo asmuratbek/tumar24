@@ -13,12 +13,30 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.TERRAIN
     });
 
+    if(ad_location != null) {
+        var ad_map = new google.maps.Map(document.getElementById('map_canvas'), {
+            center: ad_location,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+        addAdMarker(ad_location, ad_map);
+    }
+
     map.addListener('click', function (event) {
         addMarker(event.latLng);
     });
 
     // Adds a marker at the center of the map.
 }
+
+function addAdMarker(location, map) {
+    var marker = new google.maps.Marker({
+        position: location,
+        map: map
+    });
+    markers.push(marker);
+}
+
 function addMarker(location) {
     var marker = new google.maps.Marker({
         position: location,

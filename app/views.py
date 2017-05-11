@@ -13,7 +13,7 @@ from .models import Metro, City
 
 
 def index(request):
-    ads = Ad.objects.all()[:12]
+    ads = Ad.objects.filter(is_active=True)[:12]
     params = {
         'ads': ads
     }

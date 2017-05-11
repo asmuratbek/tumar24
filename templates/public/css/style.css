@@ -1459,7 +1459,8 @@ footer .copyright h2 a:hover {
 .one-ad .info .user,
 .one-post .info .views,
 .one-post .info .date,
-.one-post .info .user {
+.one-post .info .user,
+.one-ad .info .is_active {
     font-family: "Arial Regular", sans-serif;
     font-size: 12px;
     color: #818181;
