@@ -30,6 +30,8 @@ urlpatterns = [
     url(r'^fixtures/(?P<thread>\w+)$', app_views.fixtures, name='fixtures'),
     url(r'^ad/', include('ad_app.urls', namespace='ad')),
     url(r'^user/', include('users_app.urls', namespace='users')),
+    url(r'^news/', include('posts_app.urls', namespace='news')),
+    url(r'^exception/', include('tumar_exceptions.urls', namespace='exception')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

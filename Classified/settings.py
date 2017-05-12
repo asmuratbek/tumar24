@@ -57,7 +57,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.odnoklassniki',
     'allauth.socialaccount.providers.vk',
     'users_app',
-    'hitcount'
+    'hitcount',
+    'posts_app',
+    'tumar_exceptions',
+    'social_widgets'
 ]
 
 SITE_ID = 1
@@ -108,7 +111,8 @@ DATABASES = {
         'TEST': {
             'CHARSET': 'utf8',
             'COLLATION': 'utf8_general_ci'
-        }
+        },
+        'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
     },
 }
 

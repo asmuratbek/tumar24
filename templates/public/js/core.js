@@ -147,7 +147,8 @@ $(document).ready(function () {
             $(slickPagination).slick({
                 asNavFor: '#slider',
                 slidesToShow: 5,
-                slidesToScroll: 1
+                slidesToScroll: 1,
+                focusOnSelect: true
             });
         }, pathToSlick + '/slick-theme.css,' + pathToSlick + '/slick.css');
     }

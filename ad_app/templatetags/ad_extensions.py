@@ -1,3 +1,4 @@
+# coding=utf-8
 from django import template
 
 register = template.Library()
@@ -53,3 +54,9 @@ def show_link(page, num_pages, current_page):
 @register.assignment_tag
 def set(value):
     return value
+
+
+@register.filter
+def clear_spaces(value):
+    new_text = value.replace(u"&nbsp;", u" ").replace('<p>', '').replace('</p>', '')
+    return new_text

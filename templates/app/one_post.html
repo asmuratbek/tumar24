@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load ad_extensions %}
+{% load social_widgets %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <div class="one-post">
+        <div class="bread-crumbs">
+            <ul>
+                <li><a href="{% url 'index' %}">Главная</a><span>></span></li>
+                <li><a href="{% url 'news:all_posts' %}">Новости</a><span>></span></li>
+                <li class="active"><a href="{% url 'news:one_post' post_id=post.id %}">{{ post.title }}</a></li>
+            </ul>
+        </div>
+        <section>
+            <div class="title"><h1>{{ post.title }}</h1></div>
+            <div class="info">
+                <div class="views">Просмотры: {{ post.views }}</div>
+                <div class="date">Дата публикации: {{ post.updated_at|date:"d.m.Y" }}</div>
+            </div>
+
+            <div class="preview">
+                <img src="{{ post.preview.media_file.url }}" alt="{{ post.title }}">
+            </div>
+
+            <div class="post-body">
+                {{ post.text|clear_spaces|safe }}
+            </div>
+
+            <div class="share">
+                <ul>
+                    <li class="group">{% social_widget_render "facebook/share_button.html" href="developers.facebook.com" %}</li>
+                    <li class="group">{% social_widget_render "twitter/share_button.html" href="http://www.twitter.com" %}</li>
+                    <li class="group">{% social_widget_render "google/plus_share_button.html" href="https://www.google.com" %}</li>
+                </ul>
+            </div>
+
+            <div class="navigations group">
+                {% if prev %}<span><a href="{% url 'news:one_post' post_id=prev.id %}"><< Предыдущее объявление</a></span>{% endif %}
+                {% if next %}<span><a href="{% url 'news:one_post' post_id=next.id %}">Следущее объявление >></a></span>{% endif %}
+            </div>
+
+            <div class="middle-banner">
+                <a href="#"><img src="{% static 'images/banners/middle-banner.png' %}"></a>
+            </div>
+
+        </section>
+    </div>
+    <div class="last-posts">
+        <div class="side-banners">
+            <div class="one-banner">
+                <a href="#">
+                    <img src="{% static 'images/banners/side-banner.png' %}">
+                </a>
+            </div>
+            <div class="one-banner">
+                <a href="#">
+                    <img src="{% static 'images/banners/side-banner-2.png' %}">
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

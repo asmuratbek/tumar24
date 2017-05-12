@@ -6,24 +6,26 @@ import json
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.http import JsonResponse
 from django.urls import reverse
 from geoposition import Geoposition
 
-from Classified import settings
 from categories.views import generate_view_params
-from users_app.models import Users
 from .models import *
 from .forms import AdCreationForm, SearchForm
 from django.shortcuts import render
 from hitcount.views import HitCountMixin
 from hitcount.models import HitCount
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
 
 def one_ad(request, ad_id):
-    ad = Ad.objects.get(id=ad_id)
+    try:
+        ad = Ad.objects.get(id=ad_id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse('exception:not_found'))
+
     prev_id = Ad.objects.filter(id__lt=ad_id).order_by('id').last()
     next_id = Ad.objects.filter(id__gt=ad_id).order_by('id').first()
     hit_count = HitCount.objects.get_for_object(ad)
@@ -66,7 +68,7 @@ def create_new_ad(request):
             new_ad.city = form.cleaned_data['city']
             new_ad.metro = form.cleaned_data['metro']
             new_ad.phone = form.cleaned_data['phone']
-            new_ad.user = request.user if request.user else None
+            new_ad.user = request.user if request.user and not request.user.is_anonymous else None
             new_ad.price = form.cleaned_data['price'] if form.cleaned_data['price'] else 'Договорная'
             temp_location = json.loads(form.cleaned_data['location'])
             location = Coordinates()

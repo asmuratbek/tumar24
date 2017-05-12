@@ -4,6 +4,8 @@
 
 {% load helper %}
 
+{% load ad_extensions %}
+
 {% block title %}{{ ad.title }}{% endblock %}
 
 {% block content %}
@@ -44,7 +46,7 @@
                 {% endfor %}
             </div>
             <div class="ad-description">
-                {{ ad.description|safe }}
+                {{ ad.description|clear_spaces|safe }}
             </div>
             <div class="ad-price">
                 <div class="pre">Цена:</div>
