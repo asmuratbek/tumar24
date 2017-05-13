@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 from geoposition.fields import GeopositionField
+from ckeditor_uploader.fields import RichTextUploadingField
+
 
 # Create your models here.
 
@@ -29,3 +31,14 @@ class City(models.Model):
     def __unicode__(self):
         return self.title
 
+
+class AboutUs(models.Model):
+    class Meta:
+        verbose_name_plural = 'О нас'
+        verbose_name = 'о нас'
+
+    title = models.CharField(max_length=255, default='Редактирование страницы о нас')
+    text = RichTextUploadingField(verbose_name='Страница о нас')
+
+    def __unicode__(self):
+        return self.title

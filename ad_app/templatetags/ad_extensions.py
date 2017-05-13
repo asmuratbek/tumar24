@@ -58,5 +58,9 @@ def set(value):
 
 @register.filter
 def clear_spaces(value):
-    new_text = value.replace(u"&nbsp;", u" ").replace('<p>', '').replace('</p>', '')
+    new_text = value.replace(u"&nbsp;", u" ")\
+        .replace('<p>', '')\
+        .replace('</p>', '')\
+        .replace('<pre>', '')\
+        .replace('</pre>', '')
     return new_text

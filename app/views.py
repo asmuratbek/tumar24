@@ -8,17 +8,30 @@ from categories.models import Category
 from ad_app.models import Ad, Media
 from users_app.models import Users
 from Classified.settings import STATIC_ROOT
-from .models import Metro, City
+from .models import Metro, City, AboutUs
+from posts_app.models import Post
+
 # Create your views here.
 
 
 def index(request):
     ads = Ad.objects.filter(is_active=True)[:12]
+    posts = Post.objects.all()
     params = {
-        'ads': ads
+        'ads': ads,
+        'posts': posts
     }
     params.update(generate_view_params(request))
     return render(request, 'app/index.html', params)
+
+
+def about(request):
+    content = AboutUs.objects.first()
+    params = {
+        'content': content
+    }
+    params.update(generate_view_params(request))
+    return render(request, 'app/about_us.html', params)
 
 
 def fixtures(request, thread):

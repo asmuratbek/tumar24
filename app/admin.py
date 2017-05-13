@@ -13,5 +13,10 @@ class CityAdmin(admin.ModelAdmin):
     search_fields = ['title']
 
 
+class AboutAdmin(admin.ModelAdmin):
+    list_display = ['title']
+    fields = ['text']
+
 admin.site.register(Metro, MetroAdmin)
 admin.site.register(City, CityAdmin)
+admin.site.register(AboutUs, AboutAdmin)

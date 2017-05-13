@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^user/', include('users_app.urls', namespace='users')),
     url(r'^news/', include('posts_app.urls', namespace='news')),
     url(r'^exception/', include('tumar_exceptions.urls', namespace='exception')),
+    url(r'^about-us$', app_views.about, name='about')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

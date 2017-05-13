@@ -1641,6 +1641,8 @@ footer .copyright h2 a:hover {
     color: #000000;
     font-weight: 400;
     line-height: 20px;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .one-post .share {
