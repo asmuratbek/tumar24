@@ -26,7 +26,10 @@ def get_vertical_banner_by_ratio():
 
 
 def get_horizontal_banner():
-    random_index = random.randint(0, HorizontalBanners.objects.count() - 1)
-    return HorizontalBanners.objects.all()[random_index]
+    if HorizontalBanners.objects.count() > 0:
+        random_index = random.randint(0, HorizontalBanners.objects.count() - 1)
+        return HorizontalBanners.objects.all()[random_index]
+    else:
+        return None
 
 
