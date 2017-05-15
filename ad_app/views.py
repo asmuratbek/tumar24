@@ -130,7 +130,6 @@ def search(request):
         filters['is_active'] = True
         paginator = Paginator(Ad.objects.filter(**filters), 12)
         ads = paginator.page(request.GET.get('page', 1))
-        print filters
         params = {
             'ads': ads,
             'pagination': ads

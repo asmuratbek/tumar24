@@ -215,33 +215,38 @@ $(document).ready(function () {
     var cityChoice = $('.city-choice');
     $(cityChoice).each(function (i, obj) {
         $(obj).on('change', function (event) {
-            var value = $(this).val();
-            var form = null;
-            if($(this).attr('id') == 'search_city') {
-                form = $(this).parent().parent().parent().parent();
-            } else {
-                form = $(this).parent().parent().parent();
-            }
-            var url = $(this).attr('data-url');
-            var cleanedData = {'csrfmiddlewaretoken': getCookie('csrftoken'), 'city': value};
-            if(value != '') {
-                $.ajax({
-                    method: 'POST',
-                    dataType: 'HTML',
-                    url: url,
-                    data: cleanedData,
-                    success: function (response) {
-                        $(form).find('select[id="id_metro"]').html(response);
-                    },
-                    error: function () {
-                        console.error('Can\'t send request for getting metro by city');
-                    }
-                });
-            } else {
-                $(form).find('select[id="id_metro"]').html('<option value>Метро</option><option value>Выберите сначала город</option>');
-            }
-        })
+            getMetroByCity(this);
+        });
+        getMetroByCity(obj);
     });
+
+    function getMetroByCity(cityInput) {
+        var value = $(cityInput).val();
+        var form = null;
+        if($(cityInput).attr('id') == 'search_city') {
+            form = $(cityInput).parent().parent().parent().parent();
+        } else {
+            form = $(cityInput).parent().parent().parent();
+        }
+        var url = $(cityInput).attr('data-url');
+        var cleanedData = {'csrfmiddlewaretoken': getCookie('csrftoken'), 'city': value};
+        if(value != '') {
+            $.ajax({
+                method: 'POST',
+                dataType: 'HTML',
+                url: url,
+                data: cleanedData,
+                success: function (response) {
+                    $(form).find('select[id="id_metro"]').html(response);
+                },
+                error: function () {
+                    console.error('Can\'t send request for getting metro by city');
+                }
+            });
+        } else {
+            $(form).find('select[id="id_metro"]').html('<option value>Метро</option><option value>Выберите сначала город</option>');
+        }
+    }
 });
 
 
