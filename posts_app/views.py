@@ -8,6 +8,7 @@ from hitcount.views import HitCountMixin
 from .models import *
 from categories.views import generate_view_params
 from django.core.exceptions import ObjectDoesNotExist
+from Classified.parameters import SITE_PROTOCOL, SITE_URL
 
 
 # Create your views here.
@@ -40,10 +41,13 @@ def one_post(request, post_id):
     prev_id = Post.objects.filter(id__lt=post_id).last()
     next_id = Post.objects.filter(id__gt=post_id).first()
 
+    absolute_path = SITE_PROTOCOL + SITE_URL + reverse('news:one_post', kwargs={'post_id': post_id})
+
     params = {
         'post': post,
         'prev': prev_id,
-        'next': next_id
+        'next': next_id,
+        'absolute_path': absolute_path
     }
     params.update(generate_view_params(request))
     return render(request, 'app/one_post.html', params)

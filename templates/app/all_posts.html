@@ -24,7 +24,7 @@
                             <a href="{% url 'news:one_post' post_id=post.id %}"><img src="{{ post.preview.media_file.url }}"></a>
                         </div>
                         <div class="content">
-                            {{ post.text|clear_spaces|safe|slice:"0:300" }}...
+                            {{ post.short_description|slice:"0:300" }}...
                         </div>
                     </div>
                     <div class="link group">
@@ -37,21 +37,18 @@
             {% include 'app/partial/_pagination.html' %}
         </div>
         <div class="middle-banner">
-            <a href="#"><img src="{% static 'images/banners/middle-banner.png' %}"></a>
+            <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
         </div>
     </div>
     <div class="last-posts">
         <div class="side-banners">
-            <div class="one-banner">
-                <a href="#">
-                    <img src="{% static 'images/banners/side-banner.png' %}">
-                </a>
-            </div>
-            <div class="one-banner">
-                <a href="#">
-                    <img src="{% static 'images/banners/side-banner-2.png' %}">
-                </a>
-            </div>
+            {% for item in vertical_banners %}
+                <div class="one-banner">
+                    <a href="{{ item.link }}" target="_blank">
+                        <img src="{{ item.content.url }}">
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

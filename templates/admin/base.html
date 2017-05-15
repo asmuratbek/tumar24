@@ -1,0 +1,31 @@
+{% extends 'admin/base.html' %}
+{% load staticfiles %}
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/colorpicker.css' %}">
+{% endblock %}
+{% block footer %}
+    {{ block.super }}
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/colorpicker.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            var colorInput = $('#id_color');
+            if(colorInput != undefined) {
+                $(colorInput).ColorPicker({
+                    onSubmit: function(hsb, hex, rgb, el) {
+                        $(colorInput).val(hex);
+                        $(el).ColorPickerHide();
+                    },
+                    onBeforeShow: function () {
+                        $(this).ColorPickerSetColor(this.value);
+                    },
+                    onChange: function (event, hex) {
+                        $(colorInput).val(hex);
+                    }
+                }).on('keyup', function(){
+                    $(this).ColorPickerSetColor(this.value);
+                });
+            }
+        });
+    </script>
+{% endblock %}

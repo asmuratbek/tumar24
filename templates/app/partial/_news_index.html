@@ -10,7 +10,7 @@
     <div class="title"><a href="{% url 'news:one_post' post_id=post.id %}">{{ post.title }}</a></div>
     <div class="author">{{ post.updated_at|date:"d.m.Y" }}</div>
     <div class="short-description">
-        {{ post.text|clear_spaces|safe|slice:"0:128" }}...
+        {{ post.short_description|slice:"0:128" }}...
     </div>
 </div>
 {% endwith %}

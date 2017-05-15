@@ -45,22 +45,20 @@
         <form action="{% url 'ad:search' %}" method="GET">
             <ul>
                 <li>
-                    {#<input type="search" placeholder="Поиск по объявлениям...">#}
                     {{ search_form.search_word }}
                 </li>
                 <li>
                     <label>
-                        {#<select>#}
-                            {#<option value>Метро</option>#}
-                        {#</select>#}
+                        {{ search_form.city }}
+                    </label>
+                </li>
+                <li>
+                    <label>
                         {{ search_form.metro }}
                     </label>
                 </li>
                 <li>
                     <label>
-                        {#<select>#}
-                            {#<option value>Категория</option>#}
-                        {#</select>#}
                         {{ search_form.categories }}
                     </label>
                 </li>
@@ -140,7 +138,7 @@
                         {#<select required>#}
                             {#<option value>Выберите станцию метро</option>#}
                         {#</select>#}
-                        {% render_field ad_creation_form.metro %}
+                        {% render_field ad_creation_form.city %}
                     </label>
                 </div>
                 <div class="input-row">
@@ -170,10 +168,7 @@
                 </div>
                 <div class="input-row">
                     <label>
-                        {#<select required>#}
-                            {#<option value selected>Город</option>#}
-                        {#</select>#}
-                        {% render_field ad_creation_form.city %}
+                        {% render_field ad_creation_form.metro %}
                     </label>
                 </div>
                 <div class="input-row">

@@ -30,9 +30,9 @@
 
             <div class="share">
                 <ul>
-                    <li class="group">{% social_widget_render "facebook/share_button.html" href="developers.facebook.com" %}</li>
-                    <li class="group">{% social_widget_render "twitter/share_button.html" href="http://www.twitter.com" %}</li>
-                    <li class="group">{% social_widget_render "google/plus_share_button.html" href="https://www.google.com" %}</li>
+                    <li class="group">{% social_widget_render "facebook/share_button.html" href=absolute_path %}</li>
+                    <li class="group">{% social_widget_render "twitter/share_button.html" href=absolute_path %}</li>
+                    <li class="group">{% social_widget_render "google/plus_share_button.html" href=absolute_path %}</li>
                 </ul>
             </div>
 
@@ -42,23 +42,20 @@
             </div>
 
             <div class="middle-banner">
-                <a href="#"><img src="{% static 'images/banners/middle-banner.png' %}"></a>
+                <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
             </div>
 
         </section>
     </div>
     <div class="last-posts">
         <div class="side-banners">
-            <div class="one-banner">
-                <a href="#">
-                    <img src="{% static 'images/banners/side-banner.png' %}">
-                </a>
-            </div>
-            <div class="one-banner">
-                <a href="#">
-                    <img src="{% static 'images/banners/side-banner-2.png' %}">
-                </a>
-            </div>
+            {% for item in vertical_banners %}
+                <div class="one-banner">
+                    <a href="{{ item.link }}" target="_blank">
+                        <img src="{{ item.content.url }}">
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

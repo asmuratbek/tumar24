@@ -1,6 +1,7 @@
 # coding=utf-8
 import random
 
+from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render
 from categories.views import get_categories, generate_view_params
@@ -10,6 +11,7 @@ from users_app.models import Users
 from Classified.settings import STATIC_ROOT
 from .models import Metro, City, AboutUs
 from posts_app.models import Post
+
 
 # Create your views here.
 
@@ -70,3 +72,13 @@ def fixtures(request, thread):
     if thread == 'categories':
         pass
     return JsonResponse(dict(success=False, messages='No thread are selected'))
+
+
+def get_metro_by_city(request):
+    city = request.POST.get('city')
+    metros = Metro.objects.filter(city=City.objects.get(id=city))
+    choices = ['<option value>Метро</value>']
+    for item in metros:
+        choices.append('<option value="' + str(item.id) + '" style="color: #' + item.color + ';">' + item.title + '</option>')
+
+    return HttpResponse(choices)

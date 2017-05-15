@@ -23,11 +23,11 @@
                 <div class="views">Просмотры: {{ ad.views }}</div>
                 <div class="date">Дата публикации: {{ ad.created_at|date:"d.m.y" }}</div>
                 <div class="user">Пользователь: {% if ad.user %}<a href="#">{{ ad.user }}</a>{% else %}<a href="#">Аноним</a>{% endif %}</div>
-                {% if ad.user == request.user %}<div class="is_active">Статус: {{ ad.is_active|render_boolean }}</div>{% endif %}
+                {% if ad.user == request.user %}<div class="is_active">Статус: {{ ad.is_active|render_boolean|safe }}</div>{% endif %}
             </div>
             <div class="ad-info">
                 <ul>
-                    <li>Метро: <a href="#">{{ ad.metro }}</a></li>
+                    <li>Метро: <span>{{ ad.metro }}</span></li>
                     <li>Телефоны: <span>{{ ad.phone }}</span></li>
                 </ul>
             </div>
@@ -67,23 +67,20 @@
             </div>
 
             <div class="middle-banner">
-                <a href="#"><img src="{% static 'images/banners/middle-banner.png' %}"></a>
+                <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
             </div>
 
         </section>
     </div>
     <div class="last-posts">
         <div class="side-banners">
-            <div class="one-banner">
-                <a href="#">
-                    <img src="{% static 'images/banners/side-banner.png' %}">
-                </a>
-            </div>
-            <div class="one-banner">
-                <a href="#">
-                    <img src="{% static 'images/banners/side-banner-2.png' %}">
-                </a>
-            </div>
+            {% for item in vertical_banners %}
+                <div class="one-banner">
+                    <a href="{{ item.link }}" target="_blank">
+                        <img src="{{ item.content.url }}">
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

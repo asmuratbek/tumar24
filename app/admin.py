@@ -5,7 +5,7 @@ from .models import *
 # Register your models here.
 
 class MetroAdmin(admin.ModelAdmin):
-    list_display = ['title']
+    list_display = ['title', 'city', 'color']
     search_fields = ['title']
 
 

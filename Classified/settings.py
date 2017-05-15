@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     'hitcount',
     'posts_app',
     'tumar_exceptions',
-    'social_widgets'
+    'social_widgets',
+    'banners_app'
 ]
 
 SITE_ID = 1

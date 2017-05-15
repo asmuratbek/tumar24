@@ -2,13 +2,16 @@
 from __future__ import unicode_literals
 
 import json
+import threading
 
+from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from geoposition import Geoposition
-
+from Classified.parameters import SITE_PROTOCOL, SITE_URL, ADMIN_EMAIL
 from categories.views import generate_view_params
 from .models import *
 from .forms import AdCreationForm, SearchForm
@@ -84,6 +87,14 @@ def create_new_ad(request):
                 media.save()
                 new_ad.media.add(media)
 
+            link_to_ad = SITE_PROTOCOL + SITE_URL + '/admin/ad_app/ad/' + str(new_ad.id) + '/change'
+            message = '<b>Пользователь:</b>' + str(new_ad.user) if new_ad.user else 'Аноним'
+            message += '<br>' + '<b>Дата:</b>' + str(datetime.date.today()) + '<br>' + '<b>Ссылка:</b> <a href="' + link_to_ad + '" target="_blank">' + link_to_ad + '</a>'
+            print mark_safe(message)
+            thread = threading.Thread(target=send_email_notification, args=('Новое объявление',
+                                                                            mark_safe(message),
+                                                                            ADMIN_EMAIL))
+            thread.start()
             return HttpResponseRedirect(reverse('ad:one_ad', kwargs={'ad_id': new_ad.id}))
         else:
             print form.errors
@@ -99,20 +110,38 @@ def search(request):
         filters['title__icontains'] = form.cleaned_data['search_word'].lower().strip()
         if form.cleaned_data['categories']:
             category = Category.objects.filter(id=int(form.cleaned_data['categories'])).first()
-            filters['category'] = category
+            if not category.parent:
+                children = Category.objects.filter(parent=category)
+                ids = [category.id]
+                for item in children:
+                    ids.append(item.id)
+                filters['category__id__in'] = ids
+            else:
+                filters['category'] = category
 
         if form.cleaned_data['metro']:
             metro = Metro.objects.filter(id=int(form.cleaned_data['metro'])).first()
             filters['metro'] = metro
 
+        if form.cleaned_data['city']:
+            city = City.objects.filter(id=int(form.cleaned_data['city'])).first()
+            filters['city'] = city
+
         filters['is_active'] = True
         paginator = Paginator(Ad.objects.filter(**filters), 12)
         ads = paginator.page(request.GET.get('page', 1))
-
+        print filters
         params = {
             'ads': ads,
             'pagination': ads
         }
         params.update(generate_view_params(request))
         return render(request, 'app/all_ads.html', params)
+    else:
+        print form.errors
 
+
+def send_email_notification(title, body, to):
+    email = EmailMessage(title, body=body, to=to)
+    email.content_subtype = 'html'
+    email.send()

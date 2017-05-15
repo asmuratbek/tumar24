@@ -15,7 +15,8 @@ class Metro(models.Model):
         verbose_name = 'станцию метро'
 
     title = models.CharField(max_length=255, verbose_name='Название')
-    location = GeopositionField(null=True, blank=True)
+    city = models.ForeignKey('City', verbose_name='Город', null=True)
+    color = models.CharField(max_length=10, verbose_name='Цвет', null=True)
 
     def __unicode__(self):
         return self.title

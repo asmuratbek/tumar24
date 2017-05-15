@@ -14,6 +14,8 @@ class Post(models.Model):
         verbose_name_plural = u'Новости'
 
     title = models.CharField(max_length=255, verbose_name='Наименование')
+    short_description = models.TextField(max_length=300, verbose_name='Краткое описание новости', null=True, blank=True,
+                                         help_text='<b>Максимум 300 символов. На главной странице выводится только 128 символов</b>')
     text = RichTextUploadingField(verbose_name='Текст статьи')
     views = models.IntegerField(verbose_name='Просмотры', null=True, blank=True, default=0)
 

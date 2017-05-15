@@ -13,5 +13,5 @@ def make_translit(value):
 @register.filter
 def render_boolean(value):
     if value:
-        return u'Активный'
-    return u'Неактивный'
+        return u'<span style="color: green;">Активный</span>'
+    return u'<span style="color: red;">Неактивный</span>'

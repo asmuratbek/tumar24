@@ -3,6 +3,23 @@
  */
 
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
 function loadScript(url, callback, css) {
     var body = document.getElementsByTagName('body')[0];
     var script = document.createElement('script');
@@ -192,6 +209,39 @@ $(document).ready(function () {
             sentModal.openModal();
         });
     }
+});
+
+$(document).ready(function () {
+    var cityChoice = $('.city-choice');
+    $(cityChoice).each(function (i, obj) {
+        $(obj).on('change', function (event) {
+            var value = $(this).val();
+            var form = null;
+            if($(this).attr('id') == 'search_city') {
+                form = $(this).parent().parent().parent().parent();
+            } else {
+                form = $(this).parent().parent().parent();
+            }
+            var url = $(this).attr('data-url');
+            var cleanedData = {'csrfmiddlewaretoken': getCookie('csrftoken'), 'city': value};
+            if(value != '') {
+                $.ajax({
+                    method: 'POST',
+                    dataType: 'HTML',
+                    url: url,
+                    data: cleanedData,
+                    success: function (response) {
+                        $(form).find('select[id="id_metro"]').html(response);
+                    },
+                    error: function () {
+                        console.error('Can\'t send request for getting metro by city');
+                    }
+                });
+            } else {
+                $(form).find('select[id="id_metro"]').html('<option value>Метро</option><option value>Выберите сначала город</option>');
+            }
+        })
+    });
 });
 
 

@@ -32,7 +32,8 @@ urlpatterns = [
     url(r'^user/', include('users_app.urls', namespace='users')),
     url(r'^news/', include('posts_app.urls', namespace='news')),
     url(r'^exception/', include('tumar_exceptions.urls', namespace='exception')),
-    url(r'^about-us$', app_views.about, name='about')
+    url(r'^about-us$', app_views.about, name='about'),
+    url(r'^get_metro_by_city$', app_views.get_metro_by_city, name='get_metro_by_city')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

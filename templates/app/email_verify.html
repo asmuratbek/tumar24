@@ -63,16 +63,13 @@
     </div>
     <div class="last-posts">
         <div class="side-banners">
-            <div class="one-banner">
-                <a href="#">
-                    <img src="{% static 'images/banners/side-banner.png' %}">
-                </a>
-            </div>
-            <div class="one-banner">
-                <a href="#">
-                    <img src="{% static 'images/banners/side-banner-2.png' %}">
-                </a>
-            </div>
+            {% for item in vertical_banners %}
+                <div class="one-banner">
+                    <a href="{{ item.link }}" target="_blank">
+                        <img src="{{ item.content.url }}">
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

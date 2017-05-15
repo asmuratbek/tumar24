@@ -210,7 +210,7 @@ section.body {
 }
 
 .search form ul li input[type="search"] {
-    width: 654px;
+    width: 480px;
     height: 35px;
     border: 1px solid #acacac;
     -webkit-box-sizing: border-box;
