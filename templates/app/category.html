@@ -3,6 +3,9 @@
 {% load staticfiles %}
 
 {% block title %}{{ category.title }}{% endblock %}
+{% block meta %}
+
+{% endblock %}
 
 {% block content %}
     <div class="last-ads">
@@ -53,4 +56,8 @@
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+
+{% block site_info %}
+    {{ category.description }}
 {% endblock %}

@@ -6,6 +6,7 @@ from ad_app.models import Ad
 from users_app.forms import LoginForm, RegisterForm
 from ad_app.forms import SearchForm, AdCreationForm
 from banners_app.views import get_horizontal_banner, get_vertical_banner_by_ratio
+from app.models import AboutUs
 # from app.views import generate_view_params
 
 # Create your views here.
@@ -23,7 +24,8 @@ def generate_view_params(request):
         'search_form': SearchForm(request.GET),
         'ad_creation_form': AdCreationForm(request.POST),
         'vertical_banners': get_vertical_banner_by_ratio(),
-        'horizontal_banner': get_horizontal_banner()
+        'horizontal_banner': get_horizontal_banner(),
+        'base_text': AboutUs.objects.first().base_text
     }
     return params
 

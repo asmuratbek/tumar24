@@ -40,6 +40,7 @@ class AboutUs(models.Model):
 
     title = models.CharField(max_length=255, default='Редактирование страницы о нас')
     text = RichTextUploadingField(verbose_name='Страница о нас')
+    base_text = RichTextUploadingField(verbose_name='Текст внизу каждой страницы', null=True)
 
     def __unicode__(self):
         return self.title
