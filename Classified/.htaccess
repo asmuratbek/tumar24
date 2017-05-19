@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteCond %{ENV:REDIRECT_FINISH} !^$
+RewriteRule ^ - [L]
+RewriteCond %{HTTP_HOST} ^tumar24.com$ [NC]
+RewriteRule ^(.*)$ http://www.tumar24.com$1 [R=301,L,E=FINISH:1]
