@@ -195,8 +195,8 @@ GEOPOSITION_MAP_OPTIONS = {
     'minZoom': 3,
     'maxZoom': 15,
     'center': {
-        'lat': 42.876596,
-        'lng': 74.588280
+        'lat': 55.750549,
+        'lng': 37.617939
     }
 }
 

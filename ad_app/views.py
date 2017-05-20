@@ -90,7 +90,6 @@ def create_new_ad(request):
             link_to_ad = SITE_PROTOCOL + SITE_URL + '/admin/ad_app/ad/' + str(new_ad.id) + '/change'
             message = '<b>Пользователь:</b>' + str(new_ad.user) if new_ad.user else 'Аноним'
             message += '<br>' + '<b>Дата:</b>' + str(datetime.date.today()) + '<br>' + '<b>Ссылка:</b> <a href="' + link_to_ad + '" target="_blank">' + link_to_ad + '</a>'
-            print mark_safe(message)
             thread = threading.Thread(target=send_email_notification, args=('Новое объявление',
                                                                             mark_safe(message),
                                                                             ADMIN_EMAIL))
@@ -107,7 +106,8 @@ def search(request):
     form = SearchForm(request.GET)
     if form.is_valid():
         filters = dict()
-        filters['title__icontains'] = form.cleaned_data['search_word'].lower().strip()
+        if form.cleaned_data['search_word']:
+            filters['title__icontains'] = form.cleaned_data['search_word'].lower().strip()
         if form.cleaned_data['categories']:
             category = Category.objects.filter(id=int(form.cleaned_data['categories'])).first()
             if not category.parent:
@@ -137,7 +137,7 @@ def search(request):
         params.update(generate_view_params(request))
         return render(request, 'app/all_ads.html', params)
     else:
-        print form.errors
+        return render(request, 'app/all_ads.html', generate_view_params(request))
 
 
 def send_email_notification(title, body, to):

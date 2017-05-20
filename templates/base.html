@@ -75,7 +75,12 @@
                 <div class="item-content">
                     <ul>
                         {% for sub_cat in item.child.all %}
-                            <li><a href="{% url 'categories:child_category' category=item.parent.slug child=sub_cat.slug %}">{{ sub_cat.title }}</a></li>
+                            <li>
+                                <a href="{% url 'categories:child_category' category=item.parent.slug child=sub_cat.slug %}">{{ sub_cat.title }}</a>
+                                <ul>
+                                    <li></li>
+                                </ul>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>

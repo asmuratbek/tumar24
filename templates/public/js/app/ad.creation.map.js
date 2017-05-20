@@ -4,7 +4,7 @@
 
 var map = null;
 var markers = [];
-var haightAshbury = {lat: 42.864272, lng: 74.579775};
+var haightAshbury = {lat: 55.750549, lng: 37.617939};
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('choose-mark'), {

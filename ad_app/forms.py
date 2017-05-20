@@ -11,7 +11,7 @@ class SearchForm(forms.Form):
     search_word = forms.CharField(max_length=255, widget=forms.TextInput(attrs={
         'type': 'search',
         'placeholder': 'Поиск по объявлениям...'
-    }))
+    }), required=False)
     city = forms.ChoiceField(widget=forms.Select(attrs={'class': 'city-choice', 'id': 'search_city'}), required=False)
     metro = forms.CharField(widget=forms.Select(), required=False)
     categories = forms.ChoiceField(widget=forms.Select(), required=False)
