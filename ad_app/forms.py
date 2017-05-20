@@ -37,7 +37,7 @@ class SearchForm(forms.Form):
 
 class AdCreationForm(forms.ModelForm):
     images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    location = forms.CharField(widget=forms.HiddenInput)
+    location = forms.CharField(widget=forms.HiddenInput, required=False)
 
     class Meta:
         model = Ad
