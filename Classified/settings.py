@@ -76,6 +76,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+PREPEND_WWW = True
+
 ROOT_URLCONF = 'Classified.urls'
 
 TEMPLATES = [

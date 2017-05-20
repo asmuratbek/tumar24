@@ -2,6 +2,44 @@
  * Created by Эрлан on 25.04.2017.
  */
 
+$.fn.hasAttr = function (value) {
+    return this.attr(value) !== undefined;
+};
+$(document).ready(function () {
+    var burger = $('#burger');
+    var mobileMenu = $('.mobile-menu').first();
+    $(burger).on('click', function (event) {
+        if(!$(burger).hasAttr('data-toggle')) $(burger).attr('data-toggle', 'false');
+        if($(burger).attr('data-toggle') == 'false') {
+            openMobileMenu();
+        } else if($(burger).attr('data-toggle') == 'true') {
+            closeMobileMenu();
+        }
+    });
+
+    $('#mobile-menu-ad-link').on('click', function (event) {
+        closeMobileMenu();
+    });
+
+    $('.mobile-menu .menu-bar li a.auth-trigger').each(function (i, obj) {
+        $(obj).on('click', function (event) {
+            closeMobileMenu();
+        });
+    });
+
+    function closeMobileMenu() {
+        $(mobileMenu).fadeOut('fast');
+        $(burger).attr('data-toggle', 'false');
+        $('body').removeClass('no-scroll');
+    }
+
+    function openMobileMenu() {
+        $(mobileMenu).fadeIn('fast');
+        $(burger).attr('data-toggle', 'true');
+        $('body').addClass('no-scroll');
+    }
+
+});
 
 function getCookie(name) {
     var cookieValue = null;

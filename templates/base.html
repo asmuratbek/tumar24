@@ -11,11 +11,53 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block meta %}
+
+    {% endblock %}
 </head>
 <body class>
+<div class="hamburger">
+    <div class="bars-wrapper" id="burger">
+        <img src="{% static 'images/icons/menu.png' %}">
+    </div>
+
+</div>
+<div class="mobile-menu">
+    <ul class="menu-bar">
+        <li><a href="{% url 'index' %}">Главная</a></li>
+        <li><a href="{% url 'about' %}">О нас</a></li>
+        <li><a href="{% url 'news:all_posts' %}">Новости</a></li>
+        <li>{% if is_auth %}{{ request.user }} | <a href="{% url 'users:users_logout' %}">Выйти</a>{% else %}<a href="#" class="auth-trigger">Войти</a> | <a href="#" class="auth-trigger">Регистрация</a>{% endif %}</li>
+        <li><a href="#" class="add-ad-link" data-target="#ad-modal" id="mobile-menu-ad-link">Добавить объявление</a></li>
+    </ul>
+    <form>
+        <ul class="search-bar">
+            <li>{{ search_form.search_word }}</li>
+            <li>
+                <label>
+                    {{ search_form.city }}
+                </label>
+            </li>
+            <li>
+                <label>
+                    {{ search_form.metro }}
+                </label>
+            </li>
+            <li>
+                <label>
+                    {{ search_form.categories }}
+                </label>
+            </li>
+            <li>
+                <button type="submit">Найти</button>
+            </li>
+        </ul>
+    </form>
+</div>
 <div class="top-banner">
-    <a href="#">
-        <img src="{% static  'images/top-banner.png'  %}">
+    <a href="{{ horizontal_banner.link }}">
+        <img src="{{ horizontal_banner.content.url }}">
     </a>
 </div>
 <div class="mirror"></div>
@@ -99,8 +141,11 @@
             <h1>Сайт объявлений Tumar24.ru</h1>
         </div>
         <div class="info-content">
-            <p>Давно выяснено, что при оценке <b>дизайна и композиции</b> читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст.. Здесь ваш текст.. Здесь ваш текст.." Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам "lorem ipsum" сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много версий. Некоторые версии появились по ошибке, некоторые - намеренно (например, юмористические варианты).</p>
-            <p>Давно выяснено, что при оценке <b>дизайна и композиции</b> читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст.. Здесь ваш текст.. Здесь ваш текст.." Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам "lorem ipsum" сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много версий. Некоторые версии появились по ошибке, некоторые - намеренно (например, юмористические варианты).</p>
+            <p>
+                {% block site_info %}
+                    {{ base_text }}
+                {% endblock %}
+            </p>
         </div>
     </div>
 </section>
@@ -108,7 +153,7 @@
 <footer>
     <div class="carcass group">
         <div class="logo">
-            <a href="#"><img src="{% static  'images/logo.png'  %}"></a>
+            <a href="{% url 'index' %}"><img src="{% static  'images/logo.png'  %}"></a>
         </div>
         <div class="main-menu">
             <ul>
