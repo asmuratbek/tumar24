@@ -54,12 +54,14 @@
         </ul>
     </form>
 </div>
-<div class="top-banner">
-    <a href="{{ horizontal_banner.link }}">
-        <img src="{{ horizontal_banner.content.url }}">
-    </a>
-</div>
-<div class="mirror"></div>
+{% if horizontal_banner %}
+    <div class="top-banner">
+        <a href="{{ horizontal_banner.link }}">
+            <img src="{{ horizontal_banner.content.url }}">
+        </a>
+    </div>
+{% endif %}
+{#<div class="mirror"></div>#}
 <header>
     <div class="carcass">
         <div class="logo">

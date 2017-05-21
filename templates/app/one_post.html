@@ -41,9 +41,11 @@
                 {% if next %}<span><a href="{% url 'news:one_post' post_id=next.id %}">Следущее объявление >></a></span>{% endif %}
             </div>
 
-            <div class="middle-banner">
-                <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
-            </div>
+            {% if horizontal_banner %}
+                <div class="middle-banner">
+                    <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
+                </div>
+            {% endif %}
 
         </section>
     </div>

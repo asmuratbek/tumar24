@@ -66,9 +66,11 @@
                 Этот сайт не несет ответственности за достоверность публикуемых объявлений.
             </div>
 
-            <div class="middle-banner">
-                <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
-            </div>
+            {% if horizontal_banner %}
+                <div class="middle-banner">
+                    <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
+                </div>
+            {% endif %}
 
         </section>
     </div>

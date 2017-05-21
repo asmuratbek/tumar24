@@ -40,11 +40,11 @@ body {
 }
 
 header {
-    top: 100px;
+    /*top: 100px;*/
     width: 100%;
     height: 62px;
     background: #006bac;
-    position: absolute;
+    position: relative;
     z-index: 5;
 }
 
@@ -64,7 +64,9 @@ header.fixed {
     left: 0;
     z-index: 5;
 }
-
+header.fixed + .body.group {
+    margin-top: 70px;
+}
 .carcass {
     width: 1200px;
     height: inherit;

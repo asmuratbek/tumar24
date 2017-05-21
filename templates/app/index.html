@@ -15,9 +15,11 @@
                     {% include 'app/partial/_ads_index.html' %}
                 {% endfor %}
             </section>
-            <div class="middle-banner">
-                <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
-            </div>
+            {% if horizontal_banner %}
+                <div class="middle-banner">
+                    <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
+                </div>
+            {% endif %}
             <section>
                 {% for ad in ads|slice:"6:12" %}
                     {% include 'app/partial/_ads_index.html' %}

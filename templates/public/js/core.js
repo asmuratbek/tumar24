@@ -165,18 +165,24 @@ $(document).ready(function() {
 //Fix header
 
 $(document).ready(function () {
-    if($(window).scrollTop() >= 100) {
-        $('header').addClass('fixed');
-    }
-    $(window).on('scroll', function (event) {
-        var current_scroll_position = $(window).scrollTop();
-        var header = $('header');
-        if(current_scroll_position >= 100) {
-            $(header).addClass('fixed');
-        } else {
-            $(header).removeClass('fixed');
+    var header = $('header');
+    if ($(header).length > 0) {
+        var num = $(header).offset().top;
+        $(window).bind('scroll', function () {
+            if ($(window).scrollTop() > num) {
+                if ($(header).length > 0)
+                    $(header).addClass('fixed');
+            }
+            else {
+                num = $(header).offset().top;
+                $(header).removeClass('fixed');
+            }
+        });
+
+        if($(window).scrollTop() >= $(header).offset().top) {
+            $('header').addClass('fixed');
         }
-    });
+    }
 });
 
 function setPhoneMask(event) {

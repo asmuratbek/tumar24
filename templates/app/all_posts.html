@@ -36,9 +36,11 @@
         <div class="view-more">
             {% include 'app/partial/_pagination.html' %}
         </div>
-        <div class="middle-banner">
-            <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
-        </div>
+        {% if horizontal_banner %}
+            <div class="middle-banner">
+                <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
+            </div>
+        {% endif %}
     </div>
     <div class="last-posts">
         <div class="side-banners">

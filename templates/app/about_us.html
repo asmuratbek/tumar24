@@ -19,10 +19,11 @@
                 {{ content.text|clear_spaces|safe }}
             </div>
 
-            <div class="middle-banner">
-                <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
-            </div>
-
+            {% if horizontal_banner %}
+                <div class="middle-banner">
+                    <a href="{{ horizontal_banner.link }}" target="_blank"><img src="{{ horizontal_banner.content.url }}"></a>
+                </div>
+            {% endif %}
         </section>
     </div>
     <div class="last-posts">
