@@ -1,4 +1,5 @@
 # coding=utf-8
+import json
 import threading
 from datetime import datetime
 from django.contrib.auth import authenticate, login
@@ -19,6 +20,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from Classified.parameters import SITE_PROTOCOL, SITE_URL
+import requests
+import hashlib
 
 
 # Create your views here.
@@ -213,3 +216,125 @@ def set_user_password(request):
     print params
     params.update(generate_view_params(request))
     return render(request, 'app/partial/set_password.html', params)
+
+
+# https://oauth.vk.com/authorize?scope=email&state=ROB8bYW1kwyV&redirect_uri=http%3A%2F%2Fwww.tumar24.ru%2Faccounts%2Fvk%2Flogin%2Fcallback%2F&response_type=code&client_id=6011425
+
+
+def vk_auth(request):
+    state = 'ROB8bYW1kwyV'
+    request.COOKIES['vk_auth_state'] = state
+    redirect_url = SITE_PROTOCOL + SITE_URL + reverse('users:vk_login_response')
+    link = 'https://oauth.vk.com/authorize?scope=email&display=page&response_type=code&client_id=6011425&state=' + state + '&redirect_uri=' + redirect_url
+    return HttpResponseRedirect(link)
+
+
+def vk_auth_response(request):
+    code = request.GET.get('code')
+    client_id = '6011425'
+    client_secret = 'qhmMuiiiCFnMVQWOClJs'
+
+    vk_user = requests.get(
+        'https://oauth.vk.com/access_token?client_id=' + client_id + '&client_secret=' + client_secret + '&code=' + code + '&redirect_uri=' + SITE_PROTOCOL + SITE_URL + reverse(
+            'users:vk_login_response'))
+    response = json.loads(vk_user.content)
+    if 'access_token' in response:
+        token = response['access_token']
+        vk_user_id = response['user_id']
+        vk_user_email = response['email']
+        vk_user = requests.get('https://api.vk.com/method/users.get?user_ids=' + str(
+            vk_user_id) + '&fields=first_name,last_name,&access_token=' + token)
+        response = json.loads(vk_user.content)
+        is_first_name_contains = response['response'][0].get('first_name', False)
+        if is_first_name_contains:
+            try:
+                t_user = Users.objects.get(email=vk_user_email)
+                login(request, t_user)
+                if not t_user.password:
+                    return HttpResponseRedirect(reverse('users:users_set_password'))
+                return HttpResponseRedirect(reverse('index'))
+            except ObjectDoesNotExist:
+                new_user = Users()
+                new_user.email = vk_user_email
+                new_user.first_name = response['response'][0].get('first_name')
+                new_user.last_name = response['response'][0].get('last_name')
+                new_user.date_joined = datetime.today()
+                new_user.save()
+                login(request, new_user)
+                return HttpResponseRedirect(reverse('users:users_set_password'))
+    return render(request, 'app/login_error.html', generate_view_params(request))
+
+
+def ok_auth(request):
+    # app_id = '1251005440'
+    # redirect_url = SITE_PROTOCOL + SITE_URL + reverse('users:ok_auth_response')
+    # link = 'http://www.ok.ru/oauth/authorize?client_id=' + app_id + '&response_type=code&redirect_uri=' + redirect_url + '&scope=GET_EMAIL;VALUABLE_ACCESS'
+    # return HttpResponseRedirect(link)
+    params = {
+        'reason': 'ok.ru'
+    }
+    params.update(generate_view_params(request))
+    return render(request, 'app/login_error.html', params)
+
+
+def ok_auth_response(request):
+    app_id = '1251005440'
+    app_secret = 'DF50C0D03A0A1DCF207C27CF'
+    app_public = 'CBAFNBJLEBABABABA'
+    code = request.GET.get('code')
+    redirect_url = SITE_PROTOCOL + SITE_URL + reverse('users:ok_auth_response')
+    r = requests.post('http://api.ok.ru/oauth/token.do', {
+        'code': code,
+        'redirect_uri': redirect_url,
+        'grant_type': 'authorization_code',
+        'client_id': app_id,
+        'client_secret': app_secret
+    })
+    access_token = json.loads(r.content).get('access_token', False)
+    if access_token:
+        sign = hashlib.md5('application_key=' + app_public + 'method=users.getCurrentUser' + hashlib.md5(
+            access_token + app_secret).hexdigest()).hexdigest()
+        ok_user_data = requests.get(
+            'http://api.ok.ru/fb.do?method=users.getCurrentUser&access_token=' + access_token + '&application_key=' + app_public + '&sig=' + sign)
+        return JsonResponse(json.loads(ok_user_data.content))
+    return JsonResponse(dict(success=False, message='There is not access token in response'))
+
+
+# https://www.facebook.com/dialog/oauth?client_id={client_id}&redirect_uri=mysite.com/fblogin&response_type=code
+
+def fb_auth(request):
+    fb_client_id = '1881419722139777'
+    redirect_url = SITE_PROTOCOL + SITE_URL + reverse('users:fb_auth_response')
+    link = 'https://www.fb.com/dialog/oauth?client_id=' + fb_client_id + '&redirect_uri=' + redirect_url + '&response_type=code'
+    return HttpResponseRedirect(link)
+
+
+def fb_auth_response(request):
+    fb_client_id = '1881419722139777'
+    fb_client_secret = '9a099b51a1d30fcb822bddf7f2a1307a'
+    code = request.GET.get('code')
+    redirect_url = SITE_PROTOCOL + SITE_URL + reverse('users:fb_auth_response')
+    get_access_token = requests.get(
+        'https://graph.facebook.com/oauth/access_token?client_id=' + fb_client_id + '&redirect_uri=' + redirect_url + '&client_secret=' + fb_client_secret + '&code=' + code)
+    r = json.loads(get_access_token.content)
+    if 'access_token' in r:
+        fb_user = requests.get(
+            'https://graph.facebook.com/me?access_token=' + r['access_token'] + '&fields=email,first_name,last_name')
+        fb_user_data = json.loads(fb_user.content)
+        fb_user_email = fb_user_data.get('email')
+        try:
+            t_user = Users.objects.get(email=fb_user_email)
+            login(request, t_user)
+            if not t_user.password:
+                return HttpResponseRedirect(reverse('users:users_set_password'))
+            return HttpResponseRedirect(reverse('index'))
+        except ObjectDoesNotExist:
+            new_user = Users()
+            new_user.email = fb_user_email
+            new_user.first_name = fb_user_data.get('first_name')
+            new_user.last_name = fb_user_data.get('last_name')
+            new_user.date_joined = datetime.today()
+            new_user.save()
+            login(request, new_user)
+            return HttpResponseRedirect(reverse('users:users_set_password'))
+    return render(request, 'app/login_error.html', generate_view_params(request))

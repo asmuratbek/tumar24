@@ -33,4 +33,34 @@ urlpatterns = [
         set_user_password,
         name='users_set_password'
     ),
+    url(
+        r'^vk/login/callback$',
+        vk_auth_response,
+        name='vk_login_response'
+    ),
+    url(
+        r'^vk/login$',
+        vk_auth,
+        name='vk_auth'
+    ),
+    url(
+        r'^ok/login$',
+        ok_auth,
+        name='ok_auth'
+    ),
+    url(
+        r'^ok/login/callback$',
+        ok_auth_response,
+        name='ok_auth_response'
+    ),
+    url(
+        r'^facebook/login$',
+        fb_auth,
+        name='fb_auth'
+    ),
+    url(
+        r'^facebook/login/callback$',
+        fb_auth_response,
+        name='fb_auth_response'
+    )
 ]

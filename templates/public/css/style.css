@@ -1870,10 +1870,10 @@ a.odnoklassniki i {
     margin-right: 30px;
 }
 
-.login-carcass .modal-body .input-row a.facebook {
+a.facebook {
     font-family: "Arial Regular", sans-serif;
     font-size: 14px;
-    color: #ffffff;
+    color: #ffffff !important;
     background: #5181b7;
     text-decoration: none;
     padding: 10px 30px;
@@ -1888,9 +1888,10 @@ a.odnoklassniki i {
     transition: all 0.5s;
 }
 
-.login-carcass .modal-body .input-row a.facebook:hover {
+a.facebook:hover {
     background: transparent;
-    color: #5181b7;
+    color: #5181b7 !important;
+    text-decoration: none !important;
 
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
@@ -1899,10 +1900,10 @@ a.odnoklassniki i {
     transition: all 0.5s;
 }
 
-.login-carcass .modal-body .input-row a.vk {
+a.vk {
     font-family: "Arial Regular", sans-serif;
     font-size: 14px;
-    color: #ffffff;
+    color: #ffffff !important;
     background: #5181b7;
     text-decoration: none;
     padding: 10px 30px;
@@ -1917,9 +1918,10 @@ a.odnoklassniki i {
     transition: all 0.5s;
 }
 
-.login-carcass .modal-body .input-row a.vk:hover {
+a.vk:hover {
     background: transparent;
-    color: #5181b7;
+    color: #5181b7 !important;
+    text-decoration: none !important;
 
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
@@ -1928,10 +1930,10 @@ a.odnoklassniki i {
     transition: all 0.5s;
 }
 
-.login-carcass .modal-body .input-row a.odnoklassniki {
+a.odnoklassniki {
     font-family: "Arial Regular", sans-serif;
     font-size: 14px;
-    color: #ffffff;
+    color: #ffffff !important;
     background: #ee8208;
     text-decoration: none;
     padding: 10px 30px;
@@ -1945,9 +1947,10 @@ a.odnoklassniki i {
     transition: all 0.5s;
 }
 
-.login-carcass .modal-body .input-row a.odnoklassniki:hover {
+a.odnoklassniki:hover {
     background: transparent;
-    color: #ee8208;
+    color: #ee8208 !important;
+    text-decoration: none !important;
 
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;

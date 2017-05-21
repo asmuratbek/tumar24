@@ -50,12 +50,6 @@ INSTALLED_APPS = [
     'geoposition',
     'categories',
     'app',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.odnoklassniki',
-    'allauth.socialaccount.providers.vk',
     'users_app',
     'hitcount',
     'posts_app',
@@ -207,42 +201,12 @@ GEOPOSITION_MAP_OPTIONS = {
 GEOPOSITION_MARKER_OPTIONS = {
     'cursor': 'pointer',
     'position': {
-        'lng': 74.588280,
-        'lat': 42.876596
-    }
-}
-
-SOCIALACCOUNT_PROVIDERS = {
-    'facebook': {
-        'METHOD': 'oauth2',
-        'SCOPE': ['email', 'public_profile', 'user_friends'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'INIT_PARAMS': {'cookie': True},
-        'FIELDS': [
-            'id',
-            'email',
-            'name',
-            'first_name',
-            'last_name',
-            'verified',
-            'locale',
-            'timezone',
-            'link',
-            'gender',
-            'updated_time',
-        ],
-        'EXCHANGE_TOKEN': True,
-        'VERIFIED_EMAIL': True,
-        'VERSION': 'v2.4',
+        'lng': 55.750549,
+        'lat': 37.617939
     }
 }
 
 AUTH_USER_MODEL = 'users_app.Users'
-LOGIN_REDIRECT_URL = '/user/password/set'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
 
 ACCOUNT_USERNAME_REQUIRED = False
 

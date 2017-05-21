@@ -1,6 +1,5 @@
 {% load staticfiles %}
 {% load helper %}
-{% load socialaccount %}
 {% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
@@ -234,9 +233,8 @@
                     <span>Выберите местоположение на карте кликнув на нужное местоположение:</span>
                 </div>
                 <div class="input-row">
-                    <div class="map" id="choose-mark">
-
-                    </div>
+                    <input id="pac-input" class="controls" type="text" placeholder="Поиск...">
+                    <div class="map" id="choose-mark"></div>
                     {#<input type="text" placeholder="координаты" style="display: none;">#}
                     {% render_field ad_creation_form.location %}
                 </div>
@@ -279,9 +277,9 @@
                         <span>Вход через:</span>
                     </div>
                     <div class="input-row group">
-                        <a href="{% provider_login_url 'facebook' method='oauth2' %}" class="facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>
-                        <a href="{% provider_login_url 'vk' method='oauth2' %}" class="vk"><i class="fa fa-vk" aria-hidden="true"></i> Вконтакте</a>
-                        <a href="{% provider_login_url 'odnoklassniki' method='oauth2' %}" class="odnoklassniki"><i class="fa fa-odnoklassniki" aria-hidden="true"></i> Одноклассники</a>
+                        <a href="{% url 'users:fb_auth' %}" class="facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>
+                        <a href="{% url 'users:vk_auth' %}" class="vk"><i class="fa fa-vk" aria-hidden="true"></i> Вконтакте</a>
+                        <a href="{% url 'users:ok_auth' %}" class="odnoklassniki"><i class="fa fa-odnoklassniki" aria-hidden="true"></i> Одноклассники</a>
                     </div>
                 </form>
             </div>
@@ -331,7 +329,7 @@
     </script>
 {% endblock %}
 <script>var pathToLibs = '{% static 'js' %}', pathToSlick = '{% static 'slick' %}';</script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHFQIQAbbG3k34jXG-reyvJ8YUyCSIYO0&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHFQIQAbbG3k34jXG-reyvJ8YUyCSIYO0&callback=initMap&libraries=places"></script>
 <script src="{% static 'js/app/ad.creation.map.js' %}"></script>
 <script src="{% static  'js/jquery-3.2.1.min.js'  %}"></script>
 <script src="{% static  'js/core.js'  %}"></script>
