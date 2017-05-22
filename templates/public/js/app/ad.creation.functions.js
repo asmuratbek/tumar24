@@ -17,5 +17,5 @@ $(document).ready(function () {
             result = '<b>Выбрано ' + count + ' файлов</b>';
         }
         helpText.html(result);
-    })
+    });
 });

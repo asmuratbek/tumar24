@@ -62,5 +62,15 @@ urlpatterns = [
         r'^facebook/login/callback$',
         fb_auth_response,
         name='fb_auth_response'
+    ),
+    url(
+        r'^(?P<user_id>[0-9]+)$',
+        profile,
+        name='user_profile'
+    ),
+    url(
+        r'^change/password$',
+        change_password,
+        name='change_password'
     )
 ]

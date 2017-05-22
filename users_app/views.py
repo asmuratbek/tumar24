@@ -12,14 +12,14 @@ from django.template import loader
 from django.urls import reverse
 
 from categories.views import generate_view_params
-from .forms import LoginForm, RegisterForm, SetPasswordForm
+from .forms import LoginForm, RegisterForm, SetPasswordForm, SetUserInfoForm, ChangePasswordForm
 from .models import Users
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-from Classified.parameters import SITE_PROTOCOL, SITE_URL
+from Classified.parameters import SITE_PROTOCOL, SITE_URL, ADMIN_EMAIL
 import requests
 import hashlib
 
@@ -162,6 +162,14 @@ def users_email_confirm_result(request, success):
     params.update(generate_view_params(request))
     if success == 'True':
         params['success'] = True
+        params['form'] = form = SetUserInfoForm(request.POST)
+        if request.POST:
+            if form.is_valid():
+                user = Users.objects.get(email=request.user.email)
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.save()
+                params['message'] = u'Информация успешно сохранена'
     else:
         message = request.GET.get('message')
         temp_params = {
@@ -169,7 +177,7 @@ def users_email_confirm_result(request, success):
         }
         if message == email_confirm_messages['inactive']:
             temp_params['message'] = u'Ваш пользователь был заблокирован<br>Обратитесь к администраторам: ' \
-                                     u'<a href="mailto:okay11007@gmail.com">Okay11007@gmail.com</a>'
+                                     u'<a href="mailto:' + ADMIN_EMAIL[0] + u'">' + ADMIN_EMAIL[0] + u'</a>'
             temp_params['reason'] = 'inactive'
         if message == email_confirm_messages['invalid']:
             temp_params['message'] = u'Мы не смогли вас авторизовать, пожалуйста авторизуйтесь'
@@ -213,7 +221,6 @@ def set_user_password(request):
                     params.update(dict(result=False, message='Мы не нашли пользователя'))
             else:
                 params.update(dict(result=False, message='Пароли не сопадают'))
-    print params
     params.update(generate_view_params(request))
     return render(request, 'app/partial/set_password.html', params)
 
@@ -237,7 +244,10 @@ def vk_auth_response(request):
     vk_user = requests.get(
         'https://oauth.vk.com/access_token?client_id=' + client_id + '&client_secret=' + client_secret + '&code=' + code + '&redirect_uri=' + SITE_PROTOCOL + SITE_URL + reverse(
             'users:vk_login_response'))
-    response = json.loads(vk_user.content)
+    try:
+        response = json.loads(vk_user.content)
+    except:
+        response = None
     if 'access_token' in response:
         token = response['access_token']
         vk_user_id = response['user_id']
@@ -266,15 +276,15 @@ def vk_auth_response(request):
 
 
 def ok_auth(request):
-    # app_id = '1251005440'
-    # redirect_url = SITE_PROTOCOL + SITE_URL + reverse('users:ok_auth_response')
-    # link = 'http://www.ok.ru/oauth/authorize?client_id=' + app_id + '&response_type=code&redirect_uri=' + redirect_url + '&scope=GET_EMAIL;VALUABLE_ACCESS'
-    # return HttpResponseRedirect(link)
-    params = {
-        'reason': 'ok.ru'
-    }
-    params.update(generate_view_params(request))
-    return render(request, 'app/login_error.html', params)
+    app_id = '1251005440'
+    redirect_url = SITE_PROTOCOL + SITE_URL + reverse('users:ok_auth_response')
+    link = 'http://www.ok.ru/oauth/authorize?client_id=' + app_id + '&response_type=code&redirect_uri=' + redirect_url + '&scope=GET_EMAIL;VALUABLE_ACCESS'
+    return HttpResponseRedirect(link)
+    # params = {
+    #     'reason': 'ok.ru'
+    # }
+    # params.update(generate_view_params(request))
+    # return render(request, 'app/login_error.html', params)
 
 
 def ok_auth_response(request):
@@ -290,14 +300,33 @@ def ok_auth_response(request):
         'client_id': app_id,
         'client_secret': app_secret
     })
-    access_token = json.loads(r.content).get('access_token', False)
+    try:
+        access_token = json.loads(r.content).get('access_token')
+    except:
+        access_token = False
     if access_token:
         sign = hashlib.md5('application_key=' + app_public + 'method=users.getCurrentUser' + hashlib.md5(
             access_token + app_secret).hexdigest()).hexdigest()
         ok_user_data = requests.get(
             'http://api.ok.ru/fb.do?method=users.getCurrentUser&access_token=' + access_token + '&application_key=' + app_public + '&sig=' + sign)
-        return JsonResponse(json.loads(ok_user_data.content))
-    return JsonResponse(dict(success=False, message='There is not access token in response'))
+        ok_user_data = json.loads(ok_user_data.content)
+        if 'email' in ok_user_data:
+            try:
+                t_user = Users.objects.get(email=ok_user_data['email'])
+                login(request, t_user)
+                if not t_user.password:
+                    return HttpResponseRedirect(reverse('users:users_set_password'))
+                return HttpResponseRedirect(reverse('index'))
+            except ObjectDoesNotExist:
+                new_user = Users()
+                new_user.email = ok_user_data['email']
+                new_user.first_name = ok_user_data['first_name']
+                new_user.last_name = ok_user_data['last_name']
+                new_user.date_joined = datetime.today()
+                new_user.save()
+                login(request, new_user)
+                return HttpResponseRedirect(reverse('users:users_set_password'))
+    return render(request, 'app/login_error.html', generate_view_params(request))
 
 
 # https://www.facebook.com/dialog/oauth?client_id={client_id}&redirect_uri=mysite.com/fblogin&response_type=code
@@ -338,3 +367,37 @@ def fb_auth_response(request):
             login(request, new_user)
             return HttpResponseRedirect(reverse('users:users_set_password'))
     return render(request, 'app/login_error.html', generate_view_params(request))
+
+
+def profile(request, user_id):
+    try:
+        user = Users.objects.get(id=user_id)
+        params = {
+            'user': user,
+            'change_password_form': ChangePasswordForm(request.POST)
+        }
+        params.update(generate_view_params(request))
+        return render(request, 'app/user_profile.html', params)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse('exception:not_found'))
+
+
+@login_required
+def change_password(request):
+    form = ChangePasswordForm(request.POST)
+    if request.POST:
+        if form.is_valid():
+            old_pass = form.cleaned_data['old_password']
+            user = authenticate(email=request.user.email, password=old_pass)
+            pass1 = form.cleaned_data['new_password']
+            pass2 = form.cleaned_data['confirm_new_password']
+            if user:
+                if pass1 and pass2 and pass1 == pass2:
+                    user.password = make_password(pass1)
+                    user.save()
+                    login(request, user)
+                    return JsonResponse(dict(success=True))
+                return JsonResponse(dict(success=False, message='Пароли введены не верно или вообще не введены'))
+            return JsonResponse(dict(success=False, message='Неправильно набран старый пароль'))
+        return JsonResponse(dict(success=False, message='Форма не валидна'))
+    return JsonResponse(dict(success=False, message='Запрос не защищён'))

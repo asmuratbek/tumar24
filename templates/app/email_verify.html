@@ -12,7 +12,25 @@
         <section>
             {% if success %}
                 <div class="help-text">
-                    Ваш аккаунт успешно активирован! Добро пожаловать на наш сайт =)
+                    Ваш аккаунт успешно активирован! Добро пожаловать на наш сайт =)<br>
+                    Прежде чем вы приступите пользоваться нашим сайтом, пожалуйста скажите нам как вас называть?
+                </div>
+                <div class="form">
+                    {% if message %}
+                        <div class="thanks-text">{{ message }}</div>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="input-row">
+                            {{ form.first_name }}
+                        </div>
+                        <div class="input-row">
+                            {{ form.last_name }}
+                        </div>
+                        <div class="input-row">
+                            <button type="submit">Сохранить</button>
+                        </div>
+                    </form>
                 </div>
             {% else %}
                 {% if reason == 'invalid' %}
@@ -21,6 +39,7 @@
                     </div>
                     <div class="form">
                         <form action="{% url 'users:users_login' %}" method="POST">
+                            {% csrf_token %}
                             <div class="input-row">
                                 {{ form.email }}
                             </div>
@@ -38,6 +57,7 @@
                     </div>
                     <div class="form">
                         <form action="{% url 'users:users_register' %}" method="POST">
+                            {% csrf_token %}
                             <div class="input-row">
                                 {{ form.email }}
                             </div>

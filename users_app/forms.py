@@ -105,3 +105,29 @@ class SetPasswordForm(forms.Form):
     password2 = forms.CharField(max_length=255, strip=False, widget=forms.PasswordInput(
         attrs={'placeholder': 'Повторите пароль'}
     ), label=_("Password confirmation"))
+
+
+class SetUserInfoForm(forms.Form):
+    first_name = forms.CharField(max_length=255, required=True, widget=forms.TextInput(
+        attrs={
+            'placeholder': 'Имя',
+            'autofocus': ''
+        }
+    ))
+    last_name = forms.CharField(max_length=255, required=True, widget=forms.TextInput(
+        attrs={
+            'placeholder': 'Фамилия'
+        }
+    ))
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(max_length=255, strip=False, widget=forms.PasswordInput(
+        attrs={'placeholder': 'Старый пароль'}
+    ))
+    new_password = forms.CharField(max_length=255, strip=False, widget=forms.PasswordInput(
+        attrs={'placeholder': 'Новый пароль'}
+    ))
+    confirm_new_password = forms.CharField(max_length=255, strip=False, widget=forms.PasswordInput(
+        attrs={'placeholder': 'Повторите новый пароль'}
+    ))
