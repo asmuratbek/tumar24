@@ -2,7 +2,7 @@
 {% load ad_extensions %}
 <div class="one-item">
     <div class="preview">
-        <a href="{% url 'ad:one_ad' ad_id=ad.id %}"><img src="{{ ad.media.all.first.media_file.url }}"></a>
+        <a href="{% url 'ad:one_ad' ad_id=ad.id %}"><img src="{% if ad.media.all.first %}{{ ad.media.all.first.media_file.url }}{% else %}{% static 'images/no-image.png' %}{% endif %}"></a>
     </div>
     <div class="title"><a href="{% url 'ad:one_ad' ad_id=ad.id %}">{{ ad.title }}</a></div>
     <div class="price">Цена: {% if ad.price != 'Договорная' %}{{ ad.price }} руб.{% else %}{{ ad.price }}{% endif %}</div>
