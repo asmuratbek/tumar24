@@ -203,7 +203,8 @@ $(document).ready(function () {
         loadScript(pathToSlick + '/slick.min.js', function () {
             var slickPagination = $('#slider-pagination');
             $(slider).slick({
-                asNavFor: '#slider-pagination'
+                asNavFor: '#slider-pagination',
+                adaptiveHeight: true
             });
             $(slickPagination).slick({
                 asNavFor: '#slider',
