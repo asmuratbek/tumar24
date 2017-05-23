@@ -29,8 +29,8 @@ def one_ad(request, ad_id):
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('exception:not_found'))
 
-    prev_id = Ad.objects.filter(id__lt=ad_id).order_by('id').last()
-    next_id = Ad.objects.filter(id__gt=ad_id).order_by('id').first()
+    prev_id = Ad.objects.filter(id__lt=ad_id, is_active=True).order_by('id').last()
+    next_id = Ad.objects.filter(id__gt=ad_id, is_active=True).order_by('id').first()
     hit_count = HitCount.objects.get_for_object(ad)
     response = HitCountMixin.hit_count(request, hit_count)
     if response.hit_counted:
