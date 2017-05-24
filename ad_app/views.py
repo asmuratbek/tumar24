@@ -3,11 +3,13 @@ from __future__ import unicode_literals
 
 import json
 import threading
-
+import os
+from Classified import settings
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.http.response import JsonResponse
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from geoposition import Geoposition
@@ -20,6 +22,7 @@ from hitcount.views import HitCountMixin
 from hitcount.models import HitCount
 from django.core.exceptions import ObjectDoesNotExist
 
+
 # Create your views here.
 
 
@@ -29,6 +32,7 @@ def one_ad(request, ad_id):
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('exception:not_found'))
 
+    meta_key_words = ','.join(x for x in ad.description.split(' '))
     prev_id = Ad.objects.filter(id__lt=ad_id, is_active=True).order_by('id').last()
     next_id = Ad.objects.filter(id__gt=ad_id, is_active=True).order_by('id').first()
     hit_count = HitCount.objects.get_for_object(ad)
@@ -40,7 +44,8 @@ def one_ad(request, ad_id):
     params = {
         'ad': ad,
         'prev': prev_id.id if prev_id else None,
-        'next': next_id.id if next_id else None
+        'next': next_id.id if next_id else None,
+        'meta_key_words': meta_key_words
     }
     params.update(generate_view_params(request))
     return render(request, 'app/one_ad.html', params)
@@ -81,15 +86,31 @@ def create_new_ad(request):
             new_ad.location = location
             new_ad.is_active = False
             new_ad.save()
-            for f in request.FILES.getlist('images'):
-                media = Media()
-                media.media_file = f
-                media.save()
-                new_ad.media.add(media)
+
+            if form.cleaned_data['removed_images']:
+                removed_images = form.cleaned_data['removed_images'].split(',')
+                for item in removed_images:
+                    try:
+                        r_media = Media.objects.get(id=int(item))
+                        file_path = settings.MEDIA_ROOT + '/' + r_media.media_file.name
+                        os.remove(file_path)
+                        r_media.delete()
+                    except ObjectDoesNotExist:
+                        pass
+
+            if form.cleaned_data['images']:
+                images = form.cleaned_data['images'].split(',')
+                for item in images:
+                    try:
+                        media = Media.objects.get(id=int(item))
+                        new_ad.media.add(media)
+                    except ObjectDoesNotExist:
+                        pass
 
             link_to_ad = SITE_PROTOCOL + SITE_URL + '/admin/ad_app/ad/' + str(new_ad.id) + '/change'
             message = '<b>Пользователь:</b>' + str(new_ad.user) if new_ad.user else 'Аноним'
-            message += '<br>' + '<b>Дата:</b>' + str(datetime.date.today()) + '<br>' + '<b>Ссылка:</b> <a href="' + link_to_ad + '" target="_blank">' + link_to_ad + '</a>'
+            message += '<br>' + '<b>Дата:</b>' + str(
+                datetime.date.today()) + '<br>' + '<b>Ссылка:</b> <a href="' + link_to_ad + '" target="_blank">' + link_to_ad + '</a>'
             thread = threading.Thread(target=send_email_notification, args=('Новое объявление',
                                                                             mark_safe(message),
                                                                             ADMIN_EMAIL))
@@ -144,3 +165,32 @@ def send_email_notification(title, body, to):
     email = EmailMessage(title, body=body, to=to)
     email.content_subtype = 'html'
     email.send()
+
+
+def upload_media(request):
+    uploaded_files = list()
+    files_count = len(request.FILES) - 1
+    for i in range(0, files_count):
+        _file = request.FILES['file-' + str(i)]
+        media = Media()
+        media.media_file = _file
+        media.save()
+        uploaded_files.append({'id': media.id, 'url': media.media_file.url})
+    return JsonResponse(dict(uploaded_files=uploaded_files))
+
+
+def remove_uploaded_media(request):
+    if request.POST:
+        ids = request.POST.get('media_ids')
+        ids = ids.split(',')
+        for item in ids:
+            try:
+                media = Media.objects.get(id=int(item))
+                file_path = settings.MEDIA_ROOT + '/' + media.media_file.name
+                os.remove(file_path)
+                media.delete()
+            except ObjectDoesNotExist:
+                pass
+
+        return JsonResponse(dict(done=True))
+    return JsonResponse(dict(done=False))

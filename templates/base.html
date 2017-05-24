@@ -55,10 +55,10 @@
         </ul>
     </form>
 </div>
-{% if horizontal_banner %}
+{% if top_banner %}
     <div class="top-banner">
-        <a href="{{ horizontal_banner.link }}">
-            <img src="{{ horizontal_banner.content.url }}">
+        <a href="{{ top_banner.link }}">
+            <img src="{{ top_banner.content.url }}">
         </a>
     </div>
 {% endif %}
@@ -180,7 +180,7 @@
             Добавить объявление
         </div>
         <div class="modal-body">
-            <form action="{% url 'ad:create_new_ad' %}" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'ad:create_new_ad' %}" method="POST" enctype="multipart/form-data" data-media-upload-url="{% url 'ad:upload_media' %}" data-remove-uploaded-media-url="{% url 'ad:remove_uploaded_media' %}">
                 <div class="input-row">
                     <label>
                         {#<select required>#}
@@ -200,7 +200,7 @@
                     {% render_field ad_creation_form.title placeholder='Введите название объявления' %}
                 </div>
                 <div class="input-row group">
-                    <label class="upload" for="id_images">
+                    <label class="upload" for="uploading-images-input">
                         <img src="{% static  'images/upload-images.png'  %}">
                     </label>
                     <div class="info">
@@ -209,9 +209,11 @@
                         <br>
                         <span id="file-counter" style="color: red;"></span>
                     </div>
-                    {#<input type="file" id="images" style="display: none;" multiple>#}
+                    <input type="file" id="uploading-images-input" style="display: none;" multiple>
+                    {% render_field ad_creation_form.removed_images type='hidden' id='removed-images' %}
                     {% render_field ad_creation_form.images style='opacity: 0; height: 0;' %}
                 </div>
+                <div class="input-row image-row" id="upload-images-row"></div>
                 <div class="input-row">
                     {#<input type="number" placeholder="Впишите цену">#}
                     {% render_field ad_creation_form.price type='number' placeholder='Впишите цену' %}

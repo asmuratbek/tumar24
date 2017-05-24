@@ -64,9 +64,11 @@ header.fixed {
     left: 0;
     z-index: 5;
 }
+
 header.fixed + .body.group {
     margin-top: 70px;
 }
+
 .carcass {
     width: 1200px;
     height: inherit;
@@ -446,6 +448,7 @@ section.body {
     height: 15px;
     margin-right: 5px;
 }
+
 .ads-content .one-item .options ul li img {
     float: left;
 }
@@ -715,7 +718,6 @@ footer .main-menu {
     margin-top: 25px;
 }
 
-
 footer .copyright {
     float: right;
     margin-top: 33px;
@@ -826,7 +828,7 @@ footer .copyright h2 a:hover {
     top: 0;
     left: 0;
     position: fixed;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     z-index: 1000;
     overflow: auto;
     display: none;
@@ -841,6 +843,7 @@ footer .copyright h2 a:hover {
         margin-top: 100px;
     }
 }
+
 @-webkit-keyframes appear {
     from {
         margin-top: -2000px;
@@ -850,6 +853,7 @@ footer .copyright h2 a:hover {
         margin-top: 100px;
     }
 }
+
 @-moz-keyframes appear {
     from {
         margin-top: -2000px;
@@ -859,6 +863,7 @@ footer .copyright h2 a:hover {
         margin-top: 100px;
     }
 }
+
 @-o-keyframes appear {
     from {
         margin-top: -2000px;
@@ -878,6 +883,7 @@ footer .copyright h2 a:hover {
         margin-top: 0;
     }
 }
+
 @-webkit-keyframes mobile-appear {
     from {
         margin-top: -2000px;
@@ -887,6 +893,7 @@ footer .copyright h2 a:hover {
         margin-top: 0;
     }
 }
+
 @-moz-keyframes mobile-appear {
     from {
         margin-top: -2000px;
@@ -896,6 +903,7 @@ footer .copyright h2 a:hover {
         margin-top: 0;
     }
 }
+
 @-o-keyframes mobile-appear {
     from {
         margin-top: -2000px;
@@ -986,7 +994,7 @@ footer .copyright h2 a:hover {
 }
 
 .modal-carcass .modal-body form .input-row input:focus,
-.modal-carcass .modal-body form .input-row textarea:focus{
+.modal-carcass .modal-body form .input-row textarea:focus {
     outline: none;
 }
 
@@ -1005,7 +1013,6 @@ footer .copyright h2 a:hover {
     color: #818181;
     line-height: 18px;
 }
-
 
 .modal-carcass .modal-body form .input-row input[type="number"] {
     width: 158px;
@@ -1452,14 +1459,13 @@ footer .copyright h2 a:hover {
     text-decoration: underline;
 }
 
-
 .all-news .middle-banner {
     margin-top: 50px;
     margin-bottom: 30px;
 }
 
 .one-ad,
-.one-post{
+.one-post {
     width: 786px;
     height: auto;
     display: inline-block;
@@ -1467,12 +1473,12 @@ footer .copyright h2 a:hover {
 }
 
 .one-ad section,
-.one-post section{
+.one-post section {
     position: relative;
 }
 
 .one-ad .title,
-.one-post .title{
+.one-post .title {
     margin-top: 20px;
 }
 
@@ -1621,12 +1627,12 @@ footer .copyright h2 a:hover {
 }
 
 .one-ad .navigations,
-.one-post .navigations{
+.one-post .navigations {
     margin-top: 60px;
 }
 
 .one-ad .navigations span:first-child,
-.one-post .navigations span:first-child{
+.one-post .navigations span:first-child {
     float: left;
 }
 
@@ -1636,7 +1642,7 @@ footer .copyright h2 a:hover {
 }
 
 .one-ad .navigations span a,
-.one-post .navigations span a{
+.one-post .navigations span a {
     font-family: "Arial Regular", sans-serif;
     font-size: 16px;
     color: #356ba8;
@@ -1644,7 +1650,7 @@ footer .copyright h2 a:hover {
 }
 
 .one-ad .navigations span a:hover,
-.one-post .navigations span a:hover{
+.one-post .navigations span a:hover {
     text-decoration: underline;
 }
 
@@ -1785,7 +1791,6 @@ footer .copyright h2 a:hover {
     vertical-align: top;
 }
 
-
 .change-password .help-text {
     font-family: "Arial Regular", sans-serif;
     font-size: 14px;
@@ -1817,7 +1822,7 @@ footer .copyright h2 a:hover {
     color: #000;
 }
 
-.change-password .form  button {
+.change-password .form button {
     width: 185px;
     height: 40px;
     font-family: "Arial Regular", sans-serif;
@@ -1835,7 +1840,6 @@ footer .copyright h2 a:hover {
     -o-transition: all 0.5s;
     transition: all 0.5s;
 }
-
 
 .change-password .form button:hover {
     background: transparent;
@@ -1996,7 +2000,7 @@ a.odnoklassniki:hover {
 .mobile-menu {
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     position: fixed;
     top: 0;
     left: 0;
@@ -2077,6 +2081,41 @@ a.odnoklassniki:hover {
     font-family: "Arial Regular", sans-serif;
     font-size: 14px;
     font-weight: bold;
+}
+
+.input-row.image-row .one-image {
+    width: 150px;
+    height: 100px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+.input-row.image-row .one-image img {
+    position: absolute;
+    max-width: 100%;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.input-row.image-row .one-image span {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    cursor: pointer;
+    font-family: "Arial Regular", sans-serif;
+    font-size: 14px;
+    color: #000000;
+    z-index: 2;
 }
 
 @media screen and (max-width: 1200px) {

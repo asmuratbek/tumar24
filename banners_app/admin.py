@@ -11,4 +11,5 @@ class BannerAdmin(admin.ModelAdmin):
 
 admin.site.register(VerticalBanners, BannerAdmin)
 admin.site.register(HorizontalBanners, BannerAdmin)
+admin.site.register(BannersPlaces)
 

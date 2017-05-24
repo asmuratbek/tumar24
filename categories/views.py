@@ -7,6 +7,7 @@ from users_app.forms import LoginForm, RegisterForm
 from ad_app.forms import SearchForm, AdCreationForm
 from banners_app.views import get_horizontal_banner, get_vertical_banner_by_ratio
 from app.models import AboutUs
+from banners_app.models import BannersPlaces
 # from app.views import generate_view_params
 
 # Create your views here.
@@ -16,6 +17,12 @@ def generate_view_params(request):
     is_auth = False
     if request.user and not request.user.is_anonymous:
         is_auth = True
+
+    banner_manager = BannersPlaces.objects.all().first()
+    top_banner = banner_manager.top_banner if banner_manager else None
+    middle_banner = banner_manager.middle_banner if banner_manager else None
+    left_small_banner = banner_manager.left_small_banner if banner_manager else None
+    left_large_banner = banner_manager.left_large_banner if banner_manager else None
     params = {
         'categories': get_categories(),
         'is_auth': is_auth,
@@ -23,9 +30,11 @@ def generate_view_params(request):
         'app_register_form': RegisterForm,
         'search_form': SearchForm(request.GET),
         'ad_creation_form': AdCreationForm(request.POST),
-        'vertical_banners': get_vertical_banner_by_ratio(),
-        'horizontal_banner': get_horizontal_banner(),
-        'base_text': AboutUs.objects.first().base_text
+        'horizontal_banner': middle_banner,
+        'top_banner': top_banner,
+        'base_text': AboutUs.objects.first().base_text,
+        'left_small_banner': left_small_banner,
+        'left_large_banner': left_large_banner
     }
     return params
 

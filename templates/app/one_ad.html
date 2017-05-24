@@ -8,6 +8,11 @@
 
 {% block title %}{{ ad.title }}{% endblock %}
 
+{% block meta %}
+    <meta name="description" content="{{ ad.description }}">
+    <meta name="keywords" content="{{ meta_key_words }}">
+{% endblock %}
+
 {% block content %}
     <div class="one-ad">
         <div class="bread-crumbs">
@@ -76,13 +81,20 @@
     </div>
     <div class="last-posts">
         <div class="side-banners">
-            {% for item in vertical_banners %}
+            {% if left_small_banner %}
                 <div class="one-banner">
-                    <a href="{{ item.link }}" target="_blank">
-                        <img src="{{ item.content.url }}">
+                    <a href="{{ left_small_banner.link }}" target="_blank">
+                        <img src="{{ left_small_banner.content.url }}">
                     </a>
                 </div>
-            {% endfor %}
+            {% endif %}
+            {% if left_large_banner %}
+                <div class="one-banner">
+                    <a href="{{ left_large_banner.link }}" target="_blank">
+                        <img src="{{ left_large_banner.content.url }}">
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

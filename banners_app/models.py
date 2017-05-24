@@ -41,3 +41,18 @@ class HorizontalBanners(models.Model):
             return self.title
         else:
             return self.link
+
+
+class BannersPlaces(models.Model):
+    class Meta:
+        verbose_name = 'Места для баннеров'
+        verbose_name_plural = 'Места для баннеров'
+
+    top_banner = models.ForeignKey('HorizontalBanners', verbose_name='Верхний баннер', help_text='Баннер до шапки', null=True, blank=True, related_name='top_banner')
+    middle_banner = models.ForeignKey('HorizontalBanners', verbose_name='Баннер в теле сайта', help_text='Этот баннер появляется зачастую по середине сайта', null=True, blank=True, related_name='middle_banner')
+    left_small_banner = models.ForeignKey('VerticalBanners', verbose_name='Левый маленький баннер', null=True, blank=True, related_name='left_small_banner')
+    left_large_banner = models.ForeignKey('VerticalBanners', verbose_name='Левый большой баннер', null=True, blank=True, related_name='left_large_banner')
+
+    def __unicode__(self):
+        return 'Места для баннеров'
+

@@ -2,7 +2,14 @@
 
 {% load staticfiles %}
 
+{% load ad_extensions %}
+
 {% block title %}Главная{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{% if base_text %}{{ base_text|clear_spaces|safe }}{% endif %}">
+    <meta name="keywords" content="">
+{% endblock %}
 
 {% block content %}
     <div class="last-ads">
@@ -35,13 +42,20 @@
         <div class="post-content">
             {% include 'app/partial/_news_index.html' %}
             <div class="side-banners">
-                {% for item in vertical_banners %}
-                <div class="one-banner">
-                    <a href="{{ item.link }}" target="_blank">
-                        <img src="{{ item.content.url }}">
-                    </a>
-                </div>
-            {% endfor %}
+                {% if left_small_banner %}
+                    <div class="one-banner">
+                        <a href="{{ left_small_banner.link }}" target="_blank">
+                            <img src="{{ left_small_banner.content.url }}">
+                        </a>
+                    </div>
+                {% endif %}
+                {% if left_large_banner %}
+                    <div class="one-banner">
+                        <a href="{{ left_large_banner.link }}" target="_blank">
+                            <img src="{{ left_large_banner.content.url }}">
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
