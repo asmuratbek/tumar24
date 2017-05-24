@@ -240,7 +240,10 @@ def vk_auth_response(request):
     code = request.GET.get('code')
     client_id = '6011425'
     client_secret = 'qhmMuiiiCFnMVQWOClJs'
+    params = {
 
+    }
+    params.update(generate_view_params(request))
     vk_user = requests.get(
         'https://oauth.vk.com/access_token?client_id=' + client_id + '&client_secret=' + client_secret + '&code=' + code + '&redirect_uri=' + SITE_PROTOCOL + SITE_URL + reverse(
             'users:vk_login_response'))
@@ -249,30 +252,33 @@ def vk_auth_response(request):
     except:
         response = None
     if 'access_token' in response:
-        token = response['access_token']
-        vk_user_id = response['user_id']
-        vk_user_email = response['email']
-        vk_user = requests.get('https://api.vk.com/method/users.get?user_ids=' + str(
-            vk_user_id) + '&fields=first_name,last_name,&access_token=' + token)
-        response = json.loads(vk_user.content)
-        is_first_name_contains = response['response'][0].get('first_name', False)
-        if is_first_name_contains:
-            try:
-                t_user = Users.objects.get(email=vk_user_email)
-                login(request, t_user)
-                if not t_user.password:
+        if 'email' in response:
+            token = response['access_token']
+            vk_user_id = response['user_id']
+            vk_user_email = response['email']
+            vk_user = requests.get('https://api.vk.com/method/users.get?user_ids=' + str(
+                vk_user_id) + '&fields=first_name,last_name,&access_token=' + token)
+            response = json.loads(vk_user.content)
+            is_first_name_contains = response['response'][0].get('first_name', False)
+            if is_first_name_contains:
+                try:
+                    t_user = Users.objects.get(email=vk_user_email)
+                    login(request, t_user)
+                    if not t_user.password:
+                        return HttpResponseRedirect(reverse('users:users_set_password'))
+                    return HttpResponseRedirect(reverse('index'))
+                except ObjectDoesNotExist:
+                    new_user = Users()
+                    new_user.email = vk_user_email
+                    new_user.first_name = response['response'][0].get('first_name')
+                    new_user.last_name = response['response'][0].get('last_name')
+                    new_user.date_joined = datetime.today()
+                    new_user.save()
+                    login(request, new_user)
                     return HttpResponseRedirect(reverse('users:users_set_password'))
-                return HttpResponseRedirect(reverse('index'))
-            except ObjectDoesNotExist:
-                new_user = Users()
-                new_user.email = vk_user_email
-                new_user.first_name = response['response'][0].get('first_name')
-                new_user.last_name = response['response'][0].get('last_name')
-                new_user.date_joined = datetime.today()
-                new_user.save()
-                login(request, new_user)
-                return HttpResponseRedirect(reverse('users:users_set_password'))
-    return render(request, 'app/login_error.html', generate_view_params(request))
+        else:
+            params['message'] = u'У вас не привязан Email, пожалуйста зарегистрируйтесь у нас на сайте'
+    return render(request, 'app/login_error.html', params)
 
 
 def ok_auth(request):
