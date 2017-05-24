@@ -47,7 +47,7 @@ def one_ad(request, ad_id):
 
 
 def all_ads(request):
-    paginator = Paginator(Ad.objects.filter(is_active=True).order_by('-updated_at'), 12)
+    paginator = Paginator(Ad.objects.filter(is_active=True).order_by('-created_at'), 12)
     page = int(request.GET.get('page', 1))
     ads = paginator.page(page)
 
@@ -128,7 +128,7 @@ def search(request):
             filters['city'] = city
 
         filters['is_active'] = True
-        paginator = Paginator(Ad.objects.filter(**filters).order_by('-updated_at'), 12)
+        paginator = Paginator(Ad.objects.filter(**filters).order_by('-created_at'), 12)
         ads = paginator.page(request.GET.get('page', 1))
         params = {
             'ads': ads,

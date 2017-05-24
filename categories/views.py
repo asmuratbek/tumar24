@@ -46,7 +46,7 @@ def parent_category(request, category):
     all_categories = [cat]
     for item in child_categories:
         all_categories.append(item)
-    pagination = Paginator(Ad.objects.filter(category__in=all_categories, is_active=True).order_by('-updated_at'), 12)
+    pagination = Paginator(Ad.objects.filter(category__in=all_categories, is_active=True).order_by('-created_at'), 12)
     ads = pagination.page(request.GET.get('page', 1))
     params = {
         'category': cat,
@@ -59,7 +59,7 @@ def parent_category(request, category):
 
 def child_category(request, category, child):
     cat = Category.objects.filter(slug=child, parent__slug=category).first()
-    pagination = Paginator(Ad.objects.filter(category=cat, is_active=True).order_by('-updated_at'), 12)
+    pagination = Paginator(Ad.objects.filter(category=cat, is_active=True).order_by('-created_at'), 12)
     ads = pagination.page(request.GET.get('page', 1))
     params = {
         'category': cat,
