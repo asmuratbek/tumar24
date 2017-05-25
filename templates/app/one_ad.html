@@ -44,11 +44,13 @@
                 {% endfor %}
             </div>
             <div class="slider-pagination" id="slider-pagination">
-                {% for image in ad.media.all %}
-                    <div>
-                        <img src="{{ image.media_file.url }}" alt="{{ ad.title }}">
-                    </div>
-                {% endfor %}
+                {% if ad.media %}
+                    {% for image in ad.media.all %}
+                        <div>
+                            <img src="{{ image.media_file.url }}" alt="{{ ad.title }}">
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
             <div class="ad-description">
                 {{ ad.description|clear_spaces|safe }}

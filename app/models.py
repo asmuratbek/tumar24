@@ -41,6 +41,8 @@ class AboutUs(models.Model):
     title = models.CharField(max_length=255, default='Редактирование страницы о нас')
     text = RichTextUploadingField(verbose_name='Страница о нас')
     base_text = RichTextUploadingField(verbose_name='Текст внизу каждой страницы', null=True)
+    advertisement = models.FileField(verbose_name='Реклама на сайте', null=True, blank=True,
+                                     help_text='Сюда PDFник рекламы на вашем сайте я полога...')
 
     def __unicode__(self):
         return self.title
