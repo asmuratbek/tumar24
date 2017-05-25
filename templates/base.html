@@ -77,7 +77,7 @@
         </div>
         <div class="user-functions">
             <ul>
-                <li>{% if is_auth %}<a href="{% url 'users:user_profile' user_id=request.user.id %}">{{ request.user }}</a> | <a href="{% url 'users:users_logout' %}">Выйти</a>{% else %}<a href="#" class="auth-trigger">Войти</a> | <a href="#" class="auth-trigger">Регистрация</a>{% endif %}</li>
+                <li>{% if is_auth %}<a href="{% url 'users:user_profile' user_id=request.user.id %}">{{ request.user }}</a> | <a href="{% url 'users:users_logout' %}?next={{ request.get_full_path }}">Выйти</a>{% else %}<a href="#" class="auth-trigger">Войти</a> | <a href="#" class="auth-trigger">Регистрация</a>{% endif %}</li>
                 <li><a href="#" class="add-ad-link" data-target="#ad-modal">Добавить объявление</a></li>
             </ul>
         </div>

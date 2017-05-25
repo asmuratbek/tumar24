@@ -29,6 +29,8 @@ import hashlib
 
 def users_logout(request):
     logout(request)
+    if 'next' in request.GET:
+        return HttpResponseRedirect(request.GET.get('next'))
     return HttpResponseRedirect(reverse('index'))
 
 
