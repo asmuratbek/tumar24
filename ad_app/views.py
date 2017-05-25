@@ -108,7 +108,7 @@ def create_new_ad(request):
                         pass
 
             link_to_ad = SITE_PROTOCOL + SITE_URL + '/admin/ad_app/ad/' + str(new_ad.id) + '/change'
-            message = '<b>Пользователь:</b>' + str(new_ad.user) if new_ad.user else 'Аноним'
+            message = '<b>Пользователь:</b>' + str(new_ad.user) if new_ad.user else '<b>Пользователь:</b> Аноним'
             message += '<br>' + '<b>Дата:</b>' + str(
                 datetime.date.today()) + '<br>' + '<b>Ссылка:</b> <a href="' + link_to_ad + '" target="_blank">' + link_to_ad + '</a>'
             thread = threading.Thread(target=send_email_notification, args=('Новое объявление',
