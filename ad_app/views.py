@@ -84,7 +84,7 @@ def create_new_ad(request):
             location.position = position
             location.save()
             new_ad.location = location
-            new_ad.is_active = False
+            new_ad.is_active = True
             new_ad.save()
 
             if form.cleaned_data['removed_images']:
@@ -169,7 +169,7 @@ def send_email_notification(title, body, to):
 
 def upload_media(request):
     uploaded_files = list()
-    files_count = len(request.FILES) - 1
+    files_count = len(request.FILES)
     for i in range(0, files_count):
         _file = request.FILES['file-' + str(i)]
         media = Media()

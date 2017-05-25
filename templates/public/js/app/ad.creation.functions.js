@@ -94,6 +94,7 @@ $(document).ready(function () {
             var value = $(trueFileInput).val();
             $(trueFileInput).val(value != '' ? value + ',' + obj : obj);
         });
+        //console.log($(trueFileInput).val());
         this.submit();
     });
 
