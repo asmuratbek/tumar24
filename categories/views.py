@@ -23,6 +23,7 @@ def generate_view_params(request):
     middle_banner = banner_manager.middle_banner if banner_manager else None
     left_small_banner = banner_manager.left_small_banner if banner_manager else None
     left_large_banner = banner_manager.left_large_banner if banner_manager else None
+    advertisement = AboutUs.objects.first().advertisement if AboutUs.objects.first() else None
     params = {
         'categories': get_categories(),
         'is_auth': is_auth,
@@ -34,7 +35,8 @@ def generate_view_params(request):
         'top_banner': top_banner,
         'base_text': AboutUs.objects.first().base_text,
         'left_small_banner': left_small_banner,
-        'left_large_banner': left_large_banner
+        'left_large_banner': left_large_banner,
+        'advertisement': advertisement
     }
     return params
 

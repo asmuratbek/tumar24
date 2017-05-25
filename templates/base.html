@@ -164,7 +164,7 @@
                 <li><a href="{% url 'index' %}">Главная</a></li>
                 <li><a href="{% url 'about' %}">О проекте</a></li>
                 <li><a href="{% url 'news:all_posts' %}">Новости</a></li>
-                <li><a href="#">Реклама на сайте</a></li>
+                {% if advertisement %}<li><a href="{{ advertisement.url }}">Реклама на сайте</a></li>{% endif %}
             </ul>
         </div>
         <div class="copyright">

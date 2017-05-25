@@ -15,7 +15,7 @@ class CityAdmin(admin.ModelAdmin):
 
 class AboutAdmin(admin.ModelAdmin):
     list_display = ['title']
-    fields = ['text', 'base_text']
+    fields = ['text', 'base_text', 'advertisement']
 
 admin.site.register(Metro, MetroAdmin)
 admin.site.register(City, CityAdmin)
