@@ -15,7 +15,7 @@ from django.http import Http404
 
 
 def all_posts(request):
-    paginator = Paginator(Post.objects.all().order_by('-updated_at'), 10)
+    paginator = Paginator(Post.objects.all().order_by('-created_at'), 10)
     posts = paginator.page(request.GET.get('page', 1))
 
     params = {

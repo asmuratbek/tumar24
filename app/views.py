@@ -18,7 +18,7 @@ from posts_app.models import Post
 
 def index(request):
     ads = Ad.objects.filter(is_active=True).order_by('-created_at')[:12]
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-created_at')
     params = {
         'ads': ads,
         'posts': posts
