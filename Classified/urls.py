@@ -18,7 +18,10 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
 from Classified import settings
+from django.conf.urls import handler404
 from app import views as app_views
+
+handler404 = 'tumar_exceptions.views.page_not_found'
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS

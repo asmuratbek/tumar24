@@ -9,7 +9,7 @@ from .models import *
 from categories.views import generate_view_params
 from django.core.exceptions import ObjectDoesNotExist
 from Classified.parameters import SITE_PROTOCOL, SITE_URL
-
+from django.http import Http404
 
 # Create your views here.
 
@@ -30,7 +30,7 @@ def one_post(request, post_id):
     try:
         post = Post.objects.get(id=post_id)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect(reverse('exception:not_found'))
+        raise Http404
 
     hit_count = HitCount.objects.get_for_object(post)
     response = HitCountMixin.hit_count(request, hit_count)

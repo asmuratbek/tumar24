@@ -21,6 +21,7 @@ from django.shortcuts import render
 from hitcount.views import HitCountMixin
 from hitcount.models import HitCount
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 
 
 # Create your views here.
@@ -30,7 +31,7 @@ def one_ad(request, ad_id):
     try:
         ad = Ad.objects.get(id=ad_id)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect(reverse('exception:not_found'))
+        raise Http404
 
     meta_key_words = ','.join(x for x in ad.description.split(' '))
     prev_id = Ad.objects.filter(id__lt=ad_id, is_active=True).order_by('id').last()
