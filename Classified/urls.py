@@ -24,7 +24,7 @@ from app import views as app_views
 handler404 = 'tumar_exceptions.views.page_not_found'
 
 urlpatterns = [
-    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    # url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
     url(r'^admin/', admin.site.urls),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^$', app_views.index, name='index'),
