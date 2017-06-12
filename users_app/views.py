@@ -263,7 +263,7 @@ def vk_auth_response(request):
                     vk_user_id) + '&fields=first_name,last_name,&access_token=' + token)
                 response = json.loads(vk_user.content)
                 is_first_name_contains = response['response'][0].get('first_name', False)
-                if is_first_name_contains:
+                if is_first_name_contains and vk_user_email:
                     try:
                         t_user = Users.objects.get(email=vk_user_email)
                         login(request, t_user)
@@ -369,21 +369,22 @@ def fb_auth_response(request):
                     'access_token'] + '&fields=email,first_name,last_name')
             fb_user_data = json.loads(fb_user.content)
             fb_user_email = fb_user_data.get('email')
-            try:
-                t_user = Users.objects.get(email=fb_user_email)
-                login(request, t_user)
-                if not t_user.password:
+            if 'email' in fb_user_email:
+            	try:
+                    t_user = Users.objects.get(email=fb_user_email)
+                    login(request, t_user)
+                    if not t_user.password:
+                        return HttpResponseRedirect(reverse('users:users_set_password'))
+                    return HttpResponseRedirect(reverse('index'))
+                except ObjectDoesNotExist:
+                    new_user = Users()
+                    new_user.email = fb_user_email
+                    new_user.first_name = fb_user_data.get('first_name')
+                    new_user.last_name = fb_user_data.get('last_name')
+                    new_user.date_joined = datetime.today()
+                    new_user.save()
+                    login(request, new_user)
                     return HttpResponseRedirect(reverse('users:users_set_password'))
-                return HttpResponseRedirect(reverse('index'))
-            except ObjectDoesNotExist:
-                new_user = Users()
-                new_user.email = fb_user_email
-                new_user.first_name = fb_user_data.get('first_name')
-                new_user.last_name = fb_user_data.get('last_name')
-                new_user.date_joined = datetime.today()
-                new_user.save()
-                login(request, new_user)
-                return HttpResponseRedirect(reverse('users:users_set_password'))
     return render(request, 'app/login_error.html', generate_view_params(request))
 
 
