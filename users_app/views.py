@@ -369,8 +369,8 @@ def fb_auth_response(request):
                     'access_token'] + '&fields=email,first_name,last_name')
             fb_user_data = json.loads(fb_user.content)
             if 'email' in fb_user_data:
-		fb_user_email = fb_user_data.get('email')
-            	try:
+                fb_user_email = fb_user_data.get('email')
+                try:
                     t_user = Users.objects.get(email=fb_user_email)
                     login(request, t_user)
                     if not t_user.password:
