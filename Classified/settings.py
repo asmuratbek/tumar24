@@ -68,7 +68,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-PREPEND_WWW = True
+
 
 ROOT_URLCONF = 'Classified.urls'
 
@@ -212,5 +212,5 @@ EMAIL_HOST_USER = EMAIL_USER
 EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
 EMAIL_PORT = 587
 
-CSRF_COOKIE_DOMAIN = False
+CSRF_COOKIE_DOMAIN = None
 
