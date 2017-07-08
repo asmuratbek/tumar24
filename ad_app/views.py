@@ -79,12 +79,13 @@ def create_new_ad(request):
             new_ad.phone = form.cleaned_data['phone']
             new_ad.user = request.user if request.user and not request.user.is_anonymous else None
             new_ad.price = form.cleaned_data['price'] if form.cleaned_data['price'] else 'Договорная'
-            temp_location = json.loads(form.cleaned_data['location'])
-            location = Coordinates()
-            position = Geoposition(temp_location['lat'], temp_location['lng'])
-            location.position = position
-            location.save()
-            new_ad.location = location
+            temp_location = json.loads(form.cleaned_data['location']) if form.cleaned_data['location'] else None
+            if temp_location:
+                location = Coordinates()
+                position = Geoposition(temp_location['lat'], temp_location['lng'])
+                location.position = position
+                location.save()
+                new_ad.location = location
             new_ad.is_active = True
             new_ad.save()
 

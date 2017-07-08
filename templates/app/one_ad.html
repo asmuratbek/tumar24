@@ -60,6 +60,7 @@
                 <div class="pre">Цена:</div>
                 {{ ad.price }}
             </div>
+
             <div class="map" id="map_canvas">
 
             </div>
@@ -104,9 +105,15 @@
 
 {% block javascript_parameters %}
     <script>
+
         var ad_location = {
-            lat: parseFloat('{{ ad.location.position.latitude }}'.replace(',', '.')),
-            lng: parseFloat('{{ ad.location.position.longitude }}'.replace(',', '.'))
+            {% if ad.location %}
+                lat: parseFloat('{{ ad.location.position.latitude }}'.replace(',', '.')),
+                lng: parseFloat('{{ ad.location.position.longitude }}'.replace(',', '.'))
+            {% else %}
+                lat: 55.752563,
+                lng: 37.618744
+            {% endif %}
         };
     </script>
 {% endblock %}
